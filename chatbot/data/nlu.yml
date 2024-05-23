@@ -1,0 +1,305 @@
+version: "3.1"
+
+nlu:
+- intent: provide_age
+  examples: |
+    - I'm [21](age) years old.
+    - My age is [25](age).
+    - I'm [30](age).
+    - I'm a [teenager](age).
+    - I'm in my early [30s](age).
+    - I just turned [18](age).
+    - I'm [45](age) years young.
+    - I'm middle-aged at [40](age).
+    - I'm over [50](age).
+    - I'm [17](age) years old.
+    - I'm in my late [20s](age).
+    - I'm almost [30](age).
+    - I'm a youthful [50](age).
+    - I'm [23](age) years young.
+    - I'm [35](age) years old.
+    - I'm [19](age) and counting.
+    - I'm approaching [60](age).
+    - I'm [27](age) years of age.
+    - I'm 29, about to hit [30](age).
+    - I'm [16](age) years old.
+    - I'm turning [22](age) this year.
+    - I'm [33](age) years old.
+    - I'm [26](age) and proud.
+    - I'm a sprightly [70](age).
+    - I'm [20](age) years young.
+    - I'm [37](age) years old.
+    - I'm [24](age), forever young.
+    - I'm [31](age), thriving and fabulous.
+    - I'm [28](age) and loving it.
+    - I'm [50](age) years young and fabulous.
+
+- intent: provide_gender
+  examples: |
+    - I'm [male](gender).
+    - I identify as a [woman](gender).
+    - Gender: [Female](gender).
+    - I'm a [guy](gender).
+    - I'm [non-binary](gender).
+    - I'm [transgender](gender).
+    - I'm a [woman](gender).
+    - I'm [male](gender), but I love fashion.
+    - I'm [genderqueer](gender).
+    - I'm a [girl](gender).
+    - I'm a [man](gender).
+    - I identify as [male](gender).
+    - I'm a [woman](gender) at heart.
+    - I'm a [trans woman](gender).
+    - My gender is [fluid](gender).
+    - I'm a [lady](gender).
+    - I'm a [trans man](gender).
+    - I'm a [boy](gender).
+    - I'm a [tomboy](gender).
+    - I'm a [gentleman](gender).
+    - I'm [gender-neutral](gender).
+    - I'm a [female](gender), but fashion has no gender.
+    - I'm a [dude](gender).
+    - I'm a [cisgender woman](gender).
+    - I'm [gender non-conforming](gender).
+    - I'm [male](gender), but fashion is for everyone.
+    - I'm a [trans feminine person](gender).
+    - I'm a [cisgender man](gender).
+    - I'm a [cis woman](gender) who loves fashion.
+
+- intent: provide_location
+  examples: |
+    - I'm from [Mumbai](location).
+    - My location is [Delhi](location).
+    - I live in [Bangalore](location).
+    - I'm currently in [Pune](location).
+    - I'm based in [Hyderabad](location).
+    - I'm from [Chennai](location).
+    - I'm residing in [Kolkata](location).
+    - My hometown is [Jaipur](location).
+    - I come from [Ahmedabad](location).
+    - I'm in [Lucknow](location).
+    - I live in [Bhopal](location).
+    - I'm currently staying in [Indore](location).
+    - I'm from [Chandigarh](location).
+    - I'm residing in [Patna](location).
+    - I hail from [Guwahati](location).
+    - I live in [Kochi](location).
+    - My location is [Thiruvananthapuram](location).
+    - I'm based in [Dehradun](location).
+    - I'm from [Ranchi](location).
+    - I'm currently staying in [Raipur](location).
+    - I'm in [Agra](location).
+    - I live in [Visakhapatnam](location).
+    - My hometown is [Nagpur](location).
+    - I come from [Amritsar](location).
+    - I'm residing in [Kanpur](location).
+    - I'm based in [Surat](location).
+    - I'm from [Jammu](location).
+    - I'm in [Shimla](location).
+    - I live in [Gandhinagar](location).
+    - My location is [Panaji](location).
+
+- intent: body_type
+  examples: |
+    - I have an [hourglass](body_type) body shape.
+    - My body type is [athletic](body_type).
+    - I'm [pear-shaped](body_type).
+    - I'm [curvy](body_type).
+    - I'm [petite](body_type).
+    - I'm [muscular](body_type).
+    - I'm [apple-shaped](body_type).
+    - I'm [short](body_type).
+    - I have a [rectangular](body_type) body shape.
+    - I have a [slim](body_type) upper body.
+    - I'm [well-proportioned](body_type).
+    - I have an [inverted triangle](body_type) body shape.
+    - I have a [round](body_type) body type.
+    - I'm [athletic](body_type).
+    - I'm [slim](body_type).
+    - I'm [tall](body_type).
+
+- intent: occasion
+  examples: |
+    - I need an outfit for a [party](occasion).
+    - What should I wear to a [wedding](occasion)?
+    - Suggest an outfit for a [formal event](occasion).
+    - [Casual outfit](occasion) for a day out.
+    - Attire for a [beach vacation](occasion).
+    - Outfit for a [job interview](occasion).
+    - Help me with a [festival outfit](occasion).
+    - I'm going to a [cocktail party](occasion).
+    - What to wear on a [date night](occasion)?
+    - Outfit for a [casual brunch](occasion).
+    - Attire for a [business meeting](occasion).
+    - I'm attending a [Diwali celebration](occasion).
+    - What to wear to a [music festival](occasion)?
+    - Suggest an outfit for a [gala](occasion).
+    - Outfit for a [romantic dinner](occasion).
+    - What's appropriate for a [family gathering](occasion)?
+    - Attire for a [formal dinner](occasion).
+    - I need an outfit for my [birthday](occasion).
+    - Suggest a comfortable [travel outfit](occasion).
+    - Outfit for a [picnic in the park](occasion).
+    - What to wear for a [beach wedding](occasion)?
+    - Help me find a [vacation outfit](occasion).
+    - Outfit for a [graduation ceremony](occasion).
+    - Attire for a [job fair](occasion).
+    - I'm going to a [sports event](occasion).
+    - What's a good outfit for a [spa day](occasion)?
+    - Suggest an outfit for a [garden party](occasion).
+    - Outfit for a [cultural event](occasion).
+    - What to wear to a [rooftop party](occasion)?
+    - Attire for a [charity gala](occasion).
+
+- intent: category
+  examples: |
+    - Show me [dresses](category).
+    - I want to see [tops](category).
+    - Any suggestions for [jeans](category)?
+    - Recommend some [skirts](category).
+    - Can you help with [footwear options](category)?
+    - Show me [accessories](category).
+    - Looking for [jackets](category).
+    - Need suggestions for [ethnic wear](category).
+    - What about [t-shirts](category)?
+    - I need new [shoes](category).
+    - Any recommendations for [bags](category)?
+    - Show me [formal wear](category).
+    - I'm interested in [activewear](category).
+    - Suggest some [swimwear options](category).
+    - Show me [jumpsuits](category) and [rompers](category).
+    - I'm looking for [loungewear](category).
+    - What's in the category of [blazers](category)?
+    - I want to see [pants](category) and [trousers](category).
+    - Show me [casual wear options](category).
+    - I'm interested in [vintage clothing](category).
+    - Suggest [evening gowns](category).
+    - Show me [traditional Indian wear](category).
+    - I want to explore [streetwear](category).
+    - What's available in [coats](category)?  
+    - Show me [workout clothes](category).
+    - I'm looking for [summer dresses](category).
+    - Suggest [business casual outfits](category).
+    - Show me [bohemian-style clothing](category).
+    - I want to see [formal dresses](category).
+    - Suggest [partywear](category) for men.
+
+- intent: color
+  examples: |
+    - I like outfits in shades of [blue](color).
+    - Show me something in [red](color).
+    - Suggest outfits in [pastel colors](color).
+    - Do you have anything in [black](color)?
+    - I prefer [neutral colors](color).
+    - Outfits in vibrant [shades](color).
+    - Show me [white dresses](color).
+    - Can you find me something in [green](color)?
+    - I'm looking for something in [pink](color).
+    - Outfits with a pop of [yellow](color).
+    - I love [earthy tones](color).
+    - How about some [metallic colors](color)?
+    - Show me outfits in [monochrome](color).
+    - What's available in bright [colors](color)?
+    - Suggest outfits with bold [prints](color).
+    - I'm interested in [neutral tones](color).
+    - Outfits in shades of [purple](color).
+    - Show me something in [gold](color).
+    - Can you find me a [burgundy outfit](color)?
+    - I want to see outfits in [pastels](color).
+    - Outfits with a touch of [silver](color).
+    - Show me [earthy and natural colors](color).
+    - I'm looking for outfits in [rainbow colors](color).
+    - Suggest clothing in [cool tones](color).
+    - Show me outfits with [warm color palettes](color).
+    - I want to explore outfits with [gradients](color).
+    - Outfits with [complementary color schemes](color).
+    - Show me outfits with [contrasting colors](color).
+    - Suggest outfits with [primary colors](color).
+    - I'm interested in outfits with [muted tones](color).
+    - Show me outfits with [unexpected color combinations](color).
+
+- intent: irrelevant
+  examples: |
+    - How's the [weather today](irrelevant)?
+    - What's the [latest news](irrelevant)?
+    - Can you tell me a [joke](irrelevant)?
+    - How [tall is the Eiffel Tower](irrelevant)?
+    - What's your favorite [color](irrelevant)?
+    - Do you like [pizza](irrelevant)?
+    - How far is the [moon](irrelevant)?
+    - Can you recommend a good [book](irrelevant)?
+    - Tell me a [fun fact](irrelevant).
+    - What's the capital of [France](irrelevant)?
+    - Do you know any celebrity [gossip](irrelevant)?
+    - Can you help me with my [math homework](irrelevant)?
+    - What's the [meaning of life](irrelevant)?
+    - How do I [tie a tie](irrelevant)?
+    - What's the recipe for [chocolate chip cookies](irrelevant)?
+    - Can you suggest a good [movie](irrelevant)?
+    - Do you believe in [aliens](irrelevant)?
+    - Can you [sing a song](irrelevant)?
+    - How do I [change a tire](irrelevant)?
+    - What's the [distance to the sun](irrelevant)?
+    - Can you do a [magic trick](irrelevant)?
+    - What's the best way to [study for exams](irrelevant)?
+    - Can you tell me about the history of [Rome](irrelevant)?
+    - How do I [make a paper airplane](irrelevant)?
+    - What's your favorite [animal](irrelevant)?
+    - Do you play [sports](irrelevant)?
+    - How do I [cook pasta](irrelevant)?
+    - Can you give me a [riddle](irrelevant) to solve?
+    - What's the [meaning of a rainbow](irrelevant)?
+    - How do I [make a cup of coffee](irrelevant)?
+    - What's the [temperature outside](irrelevant)?
+    - Can you help me find a [job](irrelevant)?
+    - How do I [fix a leaky faucet](irrelevant)?
+    - Tell me a [story](irrelevant).
+    - What's the best way to [lose weight](irrelevant)?
+    - How does [photosynthesis work](irrelevant)?
+    - Can you recommend a good [restaurant](irrelevant)?
+    - What's the average [lifespan of a cat](irrelevant)?
+    - How do I [train my dog](irrelevant)?
+    - Tell me about the latest [tech gadgets](irrelevant).
+    - What's the [tallest mountain in the world](irrelevant)?
+    - How do I [improve my credit score](irrelevant)?
+    - Can you teach me to [dance](irrelevant)?
+    - What's the difference between a [crocodile and an alligator](irrelevant)?
+    - How can I [improve my gardening skills](irrelevant)?
+    - Tell me a [random fact](irrelevant).
+    - Can you suggest a [travel destination](irrelevant)?
+    - What's the [speed of light](irrelevant)?
+    - How do I [bake a cake from scratch](irrelevant)?
+    - Can you recommend a good [workout routine](irrelevant)?
+
+- intent: generate_outfit
+  examples: |
+    - Show me some [outfit suggestions](generate_outfit).
+    - Can you [generate outfits](generate_outfit) for me?
+    - I'm ready to see the [outfits](generate_outfit).
+    - What [outfits](generate_outfit) do you recommend?
+    - [Generate fashion outfit ideas](generate_outfit).
+    - Show me the [outfit options](generate_outfit).
+    - I want to see the [outfits](generate_outfit) now.
+    - Can you [create some outfits](generate_outfit) for me?
+    - [Generate stylish outfit combinations](generate_outfit).
+    - I'm excited to see the [outfits](generate_outfit).
+    - Show me the [outfit recommendations](generate_outfit).
+    - Can you [suggest some outfits](generate_outfit)?
+    - I'm ready for the [outfit suggestions](generate_outfit).
+    - [Generate trendy outfit ideas](generate_outfit).
+    - Show me what you've got for [outfits](generate_outfit).
+    - I'm looking forward to the [outfits](generate_outfit).
+    - Can you [create fashion ensembles](generate_outfit)?
+    - I want to see the [outfit choices](generate_outfit).
+    - [Generate outfits based on my preferences](generate_outfit).
+    - Show me the [fashion outfits](generate_outfit).
+    - I'm curious about the [outfit options](generate_outfit).
+    - Can you [come up with outfit ideas](generate_outfit)?
+    - I'm interested in the [outfit suggestions](generate_outfit).
+    - [Generate unique fashion outfits](generate_outfit).
+    - Show me [outfits that fit my style](generate_outfit).
+    - I'm ready to explore [outfit possibilities](generate_outfit).
+    - Can you [suggest outfits for me to wear](generate_outfit)?
+    - I want to see the [outfit combinations](generate_outfit).
+    - [Generate outfits that match my criteria](generate_outfit).
+    - Show me the [fashion ensemble ideas](generate_outfit).

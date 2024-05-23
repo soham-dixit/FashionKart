@@ -1,0 +1,104 @@
+version: "3.1"
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+intents:
+- provide_age
+- provide_gender
+- body_type
+- provide_location
+- occasion
+- category
+- color
+- generate_outfit
+- irrelevant
+
+responses:
+  utter_ask_age:
+  - text: "Can you please tell me your age? It will help me suggest outfits that match your age."
+
+  utter_ask_gender:
+  - text: "Great! Can you please tell me your gender? It will help me suggest outfits that match your style."
+
+  utter_ask_location:
+  - text: "Thank you! Now, let me know your current location or city. This will help me consider regional preferences."
+
+  utter_ask_body_type:
+  - text: "Cool! Can you please tell me your body type? It will help me suggest outfits that match your body type."
+
+  utter_ask_occasion:
+  - text: "Fantastic! Could you tell me the occasion you need the outfit for? This will help me recommend suitable styles."
+
+  utter_ask_category:
+  - text: "Awesome! Please specify the clothing category you're interested in, like dresses, tops, or jeans."
+
+  utter_ask_color:
+  - text: "Lovely! Let me know your color preferences. You can tell me your favorite colors or shades you like."
+
+  utter_irrelevant_query:
+  - text: "Sorry, I didn't get that. Could you please rephrase your query or ask something related to fashion outfits?"
+
+  utter_generate_outfit:
+  - text: "Generating outfit for you..."
+
+  utter_display_outfit:
+  - text: "Here's an outfit suggestion for you:\n{image_url}"
+    image: "{image_url}"
+
+actions:
+- action_call_api
+- action_generate_outfit
+- action_display_outfit
+
+entities:
+- age
+- gender
+- location
+- body_type
+- occasion
+- category
+- color
+
+slots:
+  age:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: age
+
+  gender:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: gender
+
+  location:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: location
+
+  body_type:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: body_type
+
+  occasion:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: occasion
+
+  category:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: category
+
+  color:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: color

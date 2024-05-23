@@ -1,0 +1,49 @@
+version: "3.1"
+
+rules:
+- rule: Collect age and gender
+  steps:
+  - intent: provide_age
+  - action: utter_ask_gender
+
+- rule: Collect gender and body type
+  steps:
+  - intent: provide_gender
+  - action: utter_ask_body_type
+
+- rule: Collect body type and location
+  steps:
+  - intent: body_type
+  - action: utter_ask_location
+
+- rule: Collect location and occasion
+  steps:
+  - intent: provide_location
+  - action: utter_ask_occasion
+
+- rule: Collect occasion and category
+  steps:
+  - intent: occasion
+  - action: utter_ask_category
+
+- rule: Collect category and color
+  steps:
+  - intent: category
+  - action: utter_ask_color
+
+- rule: Collect color and usage
+  steps:
+  - intent: color
+  - action: utter_generate_outfit
+  - action: action_call_api
+
+- rule: Generate outfit suggestions
+  steps:
+  - action: action_call_api
+  - action: action_generate_outfit
+  - action: action_display_outfit
+
+- rule: Handle irrelevant queries
+  steps:
+  - intent: irrelevant
+  - action: utter_irrelevant_query
