@@ -1,5 +1,6 @@
 chatbot/.rasa
 chatbot/env
+chatbot/actions/*.json
 flaskApi/__pycache__
 flaskApi/product_images
 flaskApi/models/*.pkl
