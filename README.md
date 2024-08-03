@@ -105,3 +105,7 @@
    ```bash
    npm run dev
    ```
+
+## Access the website
+
+Visit [http://localhost:8000/](http://localhost:8000/) in your web browser to access.
