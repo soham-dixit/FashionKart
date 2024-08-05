@@ -23,8 +23,10 @@ class ActionGenerateOutfit(Action):
         location = tracker.get_slot("location")
         occasion = tracker.get_slot("occasion")
         category = tracker.get_slot("category")
+        color = tracker.get_slot("color")
+        print(tracker.slots)
 
-        input_prompt = f"My location is {location}, my age is {age} and gender is {gender}. Generate {category} with  color for {occasion} occasion."
+        input_prompt = f"My location is {location}, my age is {age} and gender is {gender}. Generate {category} with  color {color} for {occasion} occasion."
         image_url = self.generate_image(input_prompt)
 
         dispatcher.utter_message(
@@ -39,7 +41,7 @@ class ActionGenerateOutfit(Action):
 
     def query(self, payload):
         try:
-            API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
+            API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3-medium-diffusers"
             headers = {"Authorization": "Bearer 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"}
             response = requests.post(API_URL, headers=headers, json=payload)
             return response.content
