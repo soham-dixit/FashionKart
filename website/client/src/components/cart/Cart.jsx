@@ -7,6 +7,7 @@ import axios from "../../axios/axios"
 import { useNavigate } from "react-router-dom";
 import flaskAxios from "../../axios/flask"
 
+
 const Component = styled(Grid)(({ theme }) => ({
   padding: '30px 135px',
   // display: 'flex',
@@ -82,7 +83,7 @@ const Cart = () => {
               }
 
               <ButtonWrapper>
-                <StyledButton onClick={placeOrder}>Place Order</StyledButton>
+                <StyledButton style={{ backgroundColor:'#0071dc'}} onClick={placeOrder}>Place Order</StyledButton>
               </ButtonWrapper>
             </LeftComponent>
 

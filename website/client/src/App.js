@@ -35,6 +35,9 @@ function App() {
                 // <ProtectLogin>
                   <LoginDialog />
                 // </ProtectLogin>
+                // <ProtectedRoute>
+                //   <Chat />
+                // </ProtectedRoute>
               }
             />
             <Route path="/home/product/:id" element={<DetailView />} />

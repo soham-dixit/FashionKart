@@ -4,6 +4,7 @@ import { removeFromCart } from "../../redux/actions/cartActions";
 import { useDispatch } from "react-redux";
 import { addEllipsis } from "../../utils/common-utils";
 import ButtonGroup from "./ButtonGroup";
+import fassured from './fass.svg'
 
 const Component = styled(Box)`
   border-top: 1px solid #f0f0f0;
@@ -31,8 +32,7 @@ const Remove = styled(Button)`
 `;
 
 const CartItem = ({ item }) => {
-  const fassured =
-    "https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png";
+  // const fassured ="https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png";
 
   const dispatch = useDispatch();
 
@@ -54,10 +54,12 @@ const CartItem = ({ item }) => {
       <Box style={{ margin: 20 }}>
         <Typography>{addEllipsis(item.product_display_name)}</Typography>
         <SmallText>
-          Seller:RetailNet
-          <span>
-            <img src={fassured} style={{ width: 50, marginLeft: 10 }} />
-          </span>
+          <Box display="flex" alignItems="center">
+                    Seller:RetailNet
+                    <Box component="span" style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={fassured} alt="fassured" style={{ width: 25, marginLeft: 15 }} />
+                    </Box>
+                </Box>
         </SmallText>
         <Typography style={{ margin: "20px 0" }}>
           <Box component="span" style={{ fontWeight: 600, fontSize: 18 }}>

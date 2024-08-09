@@ -10,6 +10,7 @@ import {
   ClickAwayListener,
 } from "@mui/material";
 
+import img from "./Fashion.png"
 import { DataContext } from "../../context/DataProvider";
 import axios from "../../axios/axios";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -27,11 +28,14 @@ const Component = styled(Box)`
 `;
 
 const Image = styled(Box)`
-  background: #2874f0
-    url(https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/login_img_c4a81e.png)
-    center 85% no-repeat;
+  background:
+    url(${img})
+    center 80% no-repeat;
   height: 83%;
   width: 40%;
+  background-size: 80% 50%;
+  align-self: center;
+  border-right: 4px solid rgb(0 0 0 / 20%);
   padding: 45px 35px;
   & > h5 {
     font-weight: bold;
@@ -102,7 +106,7 @@ const accountInitialValues = {
   },
   signup: {
     view: "signup",
-    heading: "Looks like you're new here!",
+    heading: "Create your Walmart account",
     subHeading: "Sign up with your mobile number to get started",
   },
 };
@@ -201,11 +205,17 @@ const LoginDialog = ({ open = true }) => {
           <Component style={{ overflow: "hidden" }}>
             <Box style={{ display: "flex", height: "100%" }}>
               <Image>
-                <Typography variant="h5"> {account.heading} </Typography>
-                <Typography style={{ marginTop: 20 }}>
-                  {" "}
-                  {account.subHeading}{" "}
+                <Typography style={{ color: '#000000' }} variant="h5"> {account.heading} </Typography>
+                <Typography style={{color: '#000000', marginTop: 20 }}>
+                  {"Securing your personal information is our priority."}
+                  {/* {account.subHeading}{" "} */}
                 </Typography>
+                <Typography style={{textDecoration: 'underline', color: '#000000' }}>
+                <a href="https://corporate.walmart.com/privacy-security">
+                  {"See our privacy measures."}
+                  </a>
+                </Typography>
+                
               </Image>
               {account.view === "login" ? (
                 <Wrapper>
@@ -227,14 +237,14 @@ const LoginDialog = ({ open = true }) => {
                     <Error>{message}</Error>
                   )}
                   <Text>
-                    By continuing, you agree to FashionKart's Terms of Use and
+                    By continuing, you agree to FashionGen's Terms of Use and
                     Privacy Policy.
                   </Text>
-                  <LoginButton onClick={() => loginUser()}>Login</LoginButton>
+                  <LoginButton style={{backgroundColor:"#0071dc"}} onClick={() => loginUser()}>Login</LoginButton>
                   <Typography style={{ textAlign: "center" }}>OR</Typography>
-                  <RequestOTP>Request OTP</RequestOTP>
-                  <CreateAccount onClick={() => toggleSignup()}>
-                    New to FashionKart? Create an account
+                  <RequestOTP style={{backgroundColor:"#0071dc", color:"#ffffff"}}>Request OTP</RequestOTP>
+                  <CreateAccount style={{color:"#ffc220"}} onClick={() => toggleSignup()}>
+                    New to FashionGen? Create an account
                   </CreateAccount>
                 </Wrapper>
               ) : (
@@ -283,7 +293,7 @@ const LoginDialog = ({ open = true }) => {
                     label="Enter City"
                   />
 
-                  <LoginButton onClick={() => signupUser()}>
+                  <LoginButton style={{backgroundColor:"#0071dc", color:"#ffffff"}} onClick={() => signupUser()}>
                     Continue
                   </LoginButton>
                 </Wrapper>

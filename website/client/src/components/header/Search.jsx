@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios/axios";
 
 const SearchContainer = styled(Box)`
-  border-radius: 2px;
+  border-radius: 20px; // Changed this line to round the borders
   margin-left: 10px;
   width: 38%;
   background-color: #fff;
@@ -48,6 +48,7 @@ const ListWrapper = styled(List)`
   overflow-y: auto;
   border: 1px solid #ccc;
   width: 100%;
+  border-radius: 0 0 20px 20px; // Added rounded corners to the bottom of the list
 `;
 
 const Search = () => {
@@ -87,7 +88,7 @@ const Search = () => {
   return (
     <SearchContainer>
       <InputSearchBase
-        placeholder="Search for products, brands and more"
+        placeholder="Search for products, brands and more in FashionGen"
         onChange={(e) => getText(e.target.value)}
         value={text}
       />

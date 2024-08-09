@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Container,
   Grid,
@@ -19,6 +19,8 @@ import axios from "../../axios/axios";
 import flaskAxios from "../../axios/flask";
 import { useSelector } from "react-redux";
 
+
+
 const Sidebar = styled(Paper)(({ theme }) => ({
   height: "70vh",
   padding: theme.spacing(2),
@@ -31,8 +33,9 @@ const Message = styled("div")(({ theme, type }) => ({
   padding: theme.spacing(1),
   borderRadius: "8px",
   maxWidth: "80%",
-  backgroundColor: type === "user" ? "#1976D2" : "#f0f0f0",
-  color: type === "user" ? "#f0f0f0" : "#1976D2",
+  backgroundColor: type === "user" ? "#0071dc" : "#f0f0f0",
+  color: type === "user" ? "#f0f0f0" : "#000000",
+  fontSize: "18px",
   alignSelf: type !== "user" ? "flex-start" : "flex-end",
   width: "fit-content",
 }));
@@ -55,7 +58,7 @@ const IconButtonStyled = styled(IconButton)({
 });
 
 const Conversation = styled("div")({
-  height: "466px",
+  height: "460px",
   display: "flex",
   flexDirection: "column",
   overflowY: "scroll",
@@ -67,9 +70,20 @@ const ButtonContainer = styled(Box)`
   justify-content: space-around;
   padding: 0 5px;
   margin-bottom: 20px;
+  // background : #0071dc;
+`;
+
+const ViewAllButton = styled(Button)`
+  margin-left: auto;
+  background-color: #0071dc;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 600;
 `;
 
 const RASA_API_URL = "http://localhost:5005";
+
+
 
 function Chat() {
   const {
@@ -80,12 +94,22 @@ function Chat() {
   } = useSpeechRecognition();
 
   const { user } = useSelector((state) => state.user);
+  const conversationEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    conversationEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+
 
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [productId, setProductId] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+  scrollToBottom();
+}, [messages]);
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
@@ -102,7 +126,6 @@ function Chat() {
       console.log(err);
     }
   };
-
   const handleSend = async () => {
     if (inputText.trim() !== "") {
       const newMessage = {
@@ -152,6 +175,11 @@ function Chat() {
       resetTranscript();
     }
   };
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSend();
+    }
+  };
 
   const handleInputChange = (event) => {
     setInputText(event.target.value);
@@ -162,15 +190,23 @@ function Chat() {
       <ButtonContainer>
         {/* Add your buttons here */}
         <Link to="/">
-          <Button variant="contained" color="primary" size="large">
-            Ask AI 🧠
-          </Button>
-        </Link>
-        <Link to="/home">
-          <Button variant="contained" color="primary" size="large">
-            Explore
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#0071dc', color: 'white' }}
+        >
+          Ask AI 🤖
+        </Button>
+      </Link>
+      <Link to="/home">
+        <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#0071dc', color: 'white' }}
+        >
+          Explore 🔍
+        </Button>
+      </Link>
       </ButtonContainer>
       <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
         <Grid container spacing={2}>
@@ -194,7 +230,9 @@ function Chat() {
                       alt="Generated image"
                       style={{ height: "200px", width: "200px" }}
                     />
+                    <ViewAllButton variant="contained">View Product</ViewAllButton>
                   </Link>
+                  
                 </>
               )}
             </Sidebar>
@@ -214,12 +252,13 @@ function Chat() {
                       <img
                         src={message.image}
                         alt="Generated Outfit"
-                        style={{ maxWidth: "100%" }}
+                        style={{ maxWidth: "60%" }}
                       />
                     </div>
                   )}
                 </Message>
               ))}
+              <div ref={conversationEndRef} />
             </Conversation>
             <ChatBox>
               <Input
@@ -227,6 +266,7 @@ function Chat() {
                 fullWidth
                 value={inputText}
                 onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
               />
               <IconButtonStyled onClick={handleSend}>
                 <SendIcon />

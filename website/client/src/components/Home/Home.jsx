@@ -114,15 +114,23 @@ const Home = () => {
         <ButtonContainer>
           {/* Add your buttons here */}
           <Link to="/">
-            <Button variant="contained" color="primary" size="large">
-              Ask AI 🧠
-            </Button>
-          </Link>
-          <Link to="/home">
-            <Button variant="contained" color="primary" size="large">
-              Explore
-            </Button>
-          </Link>
+        <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#0071dc', color: 'white' }}
+        >
+          Ask AI 🤖
+        </Button>
+      </Link>
+      <Link to="/home">
+        <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#0071dc', color: 'white' }}
+        >
+          Explore 🔍
+        </Button>
+      </Link>
         </ButtonContainer>
 
         {/* <MidSlide products={products} title='Deal of the Day' timer={true}  /> */}

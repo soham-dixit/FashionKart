@@ -28,7 +28,7 @@ def generate_image(prompt):
     try:
         # Attempt to open the image with PIL
         image = Image.open(io.BytesIO(image_bytes))
-        image.show()
+        # image.show()
 
         # Save the image to Azure Blob Storage
         image_stream = io.BytesIO()

@@ -10,6 +10,7 @@ import {
   IconButton,
   Drawer,
   List,
+  Button
 } from "@mui/material";
 
 import { Menu } from "@mui/icons-material";
@@ -20,14 +21,15 @@ import CustomButtons from "./CustomButtons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../axios/axios";
 import flask from "../../axios/flask";
+import img from "./Fashion.png"
 
 const StyledHeader = styled(AppBar)`
-  background: #2974f0;
+  background: #0071dc;
   height: 55px;
 `;
 
 const Component = styled(Link)`
-  margin-left: 12%;
+  margin-right: 2%;
   line-height: 0;
   text-decoration: none;
   color: inherit;
@@ -66,6 +68,19 @@ const Header = () => {
   const subUrl =
     "https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png";
 
+  const [buttonText, setButtonText] = useState('Upload Avatar');
+  const [buttonColor, setButtonColor] = useState('#0a2036ac'); // default color for the button
+  const [txtc, settxtc] = useState('#ffffff'); // dfefault color for the button
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      submitFile(event);
+      setButtonText('Uploaded');
+      setButtonColor('#ffc220');
+      settxtc('#000000de')
+    }
+  };
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -119,8 +134,8 @@ const Header = () => {
         </Drawer>
 
         <Component to="/">
-          <img src={logoUrl} alt="logo" style={{ width: 75 }} />
-          <Box style={{ display: "flex" }}>
+          {/* <img src={img} alt="logo" style={{ width: 75 }} /> */}
+          {/* <Box style={{ display: "flex" }}>
             <SubHeading>
               Explore{" "}
               <Box component="span" style={{ color: "#FFE500" }}>
@@ -128,18 +143,47 @@ const Header = () => {
               </Box>{" "}
             </SubHeading>
             <PlusImg src={subUrl} alt="subLogo" />
-          </Box>
+          </Box> */}
+          <Typography style={{
+            fontWeight: 'bold',
+            fontSize: '24px',
+            color: 'inherit',
+            transition: 'color 0.3s ease',
+          }}
+            onMouseOver={(e) => e.currentTarget.style.color = '#ffc220'}
+            onMouseOut={(e) => e.currentTarget.style.color = 'inherit'}>
+            FashionGen
+          </Typography>
         </Component>
         <Search />
 
         {/* <AddAPhotoIcon style={{ marginLeft: "16px", cursor: "pointer" }} />
          */}
 
-        <form
+        {/* <form
           encType="multipart/form-data"
           style={{ marginLeft: "16px", cursor: "pointer" }}
         >
           <input type="file" name="avatar" onChange={submitFile} />
+        </form> */}
+        <form encType="multipart/form-data" style={{ marginLeft: '16px', cursor: 'pointer' }}>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/*" // only allow image files
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+            id="file-input"
+          />
+          <label htmlFor="file-input">
+            <Button
+              variant="contained"
+              component="span"
+              style={{ backgroundColor: buttonColor, color:txtc}}
+            >
+              {buttonText}
+            </Button>
+          </label>
         </form>
 
         <CustomButtonWrapper>

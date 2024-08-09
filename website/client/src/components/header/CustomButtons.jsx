@@ -1,9 +1,11 @@
 import { useState, useContext } from 'react';
+import "./cart.css";
 
 import { Box, Button, Typography, styled, Badge } from '@mui/material';
 import React from 'react';
 import { ShoppingCart } from '@mui/icons-material/';
 import LoginDialog from '../login/LoginDialog';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 import { DataContext } from '../../context/DataProvider';
 import Profile from './Profile';
@@ -59,7 +61,7 @@ const LoginButton = styled(Button)(({ theme }) => ({
 const CustomButtons = () => {
 
     const [open, setOpen] = useState(true);
-    const {user} = useSelector(state => state.user)
+    const { user } = useSelector(state => state.user)
 
     const { account, setAccount } = useContext(DataContext);
 
@@ -77,15 +79,24 @@ const CustomButtons = () => {
             }
 
             <Container to='/orders' >
-            <Typography style={{ marginTop: 3, width: 135, cursor: 'pointer' }}>My Orders</Typography>
+                <InventoryIcon />
+                <Typography style={{ marginLeft:10, marginTop: 3, width: 135, cursor: 'pointer' }}>My Orders</Typography>
             </Container>
-            <Typography style={{ marginTop: 3 }}>More</Typography>
+            {/* <Typography style={{ marginTop: 3 }}>More</Typography>
+            
+            
+            */}
 
             <Container to='/cart'>
-                <Badge badgeContent={cartItems?.length} color='primary'>
+                {/* <Badge  badgeContent={cartItems?.length} color='primary'>
+                    <ShoppingCart />
+                </Badge> */}
+                <Badge
+                    badgeContent={cartItems?.length}
+                    classes={{ badge: 'custom-badge' }} // Apply the custom CSS class
+                >
                     <ShoppingCart />
                 </Badge>
-
                 <Typography style={{ marginLeft: 10 }}>Cart</Typography>
             </Container>
             {/* <LoginDialog open={open} setOpen={setOpen} /> */}

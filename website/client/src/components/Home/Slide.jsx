@@ -47,7 +47,7 @@ const DealText = styled(Typography)`
 
 const ViewAllButton = styled(Button)`
   margin-left: auto;
-  background-color: #2874f0;
+  background-color: #0071dc;
   border-radius: 2px;
   font-size: 13px;
   font-weight: 600;
@@ -93,7 +93,7 @@ const Slide = ({
           </Timer>
         )}
 
-        <ViewAllButton variant="contained">View All</ViewAllButton>
+        {/* <ViewAllButton variant="contained">View All</ViewAllButton> */}
       </Deal>
       <Divider />
 
@@ -150,7 +150,7 @@ const Slide = ({
                       {" "}
                       {product?.product_name}{" "}
                     </Text>
-                    <Text style={{ color: "green" }}> {product?.price} </Text>
+                    <Text style={{ color: "green" }}> ₹{product?.price} </Text>
                     <Text style={{ color: "#212121", opacity: ".6" }}>
                       {" "}
                       {product?.category}{" "}
