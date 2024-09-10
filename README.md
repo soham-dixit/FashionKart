@@ -9,7 +9,7 @@
 ## Recommendation Model
 
 1. Download the trained model zip file from [Google Drive](https://drive.google.com/file/d/1AA73j9EM7TCJn579Zy86rFjyM8z72A_7/view?usp=sharing).
-2. Extract the zip file in `flashApi/models/`.
+2. Extract the zip file in `flaskApi/models/`.
 
 ## Chatbot
 
