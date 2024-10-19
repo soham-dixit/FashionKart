@@ -9,4 +9,6 @@ env
 website/client/public/product_images
 website/server/product_images
 website/server/.env
+website/server/firebase-admin-sdk.json
+clothes-extraction/cloth_segm.pth
 # build

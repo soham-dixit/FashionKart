@@ -3,12 +3,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
-import firebaseAdmin from 'firebase-admin';
-import { v4 as uuidv4 } from 'uuid';
-import { createRequire } from 'module';
+import firebaseAdmin from "firebase-admin";
+import { v4 as uuidv4 } from "uuid";
+import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const serviceAccount = require('./firebase-admin-sdk.json');
+const serviceAccount = require("./firebase-admin-sdk.json");
 
 import multer from "multer";
 
@@ -75,15 +75,17 @@ const admin = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
 });
 
-const storageRef = admin.storage().bucket(`gs://fashionkart-26db7.appspot.com/`);
+const storageRef = admin
+  .storage()
+  .bucket(`gs://fashionkart-26db7.appspot.com/`);
 
 async function uploadFile(filePath, filename) {
   const storage = await storageRef.upload(filePath, {
-      public: true,
-      destination: `userImages/${filename}`,
-      metadata: {
-          firebaseStorageDownloadTokens: uuidv4(),
-      }
+    public: true,
+    destination: `userImages/${filename}`,
+    metadata: {
+      firebaseStorageDownloadTokens: uuidv4(),
+    },
   });
 
   return storage[0].metadata.mediaLink;
@@ -96,7 +98,6 @@ app.post("/api/v4/try-on", upload.single("file"), async (req, res) => {
   filename = filename.replace(/\s/g, "");
   const userId = req.body.userId;
   console.log("userId", userId);
-  
 
   const imageUrl = await uploadFile(filePath, filename);
 
@@ -108,13 +109,13 @@ app.post("/api/v4/try-on", upload.single("file"), async (req, res) => {
   }
 
   await UserModel.updateOne({ userId }, { $set: { imageUrl } });
-  
+
   res.status(200).json({
     success: true,
     message: "Image uploaded successfully",
     imageUrl: imageUrl,
   });
-} );
+});
 
 app.use("/api/v4/auth", authRouter);
 app.use("/api/v4/product", productRouter);
