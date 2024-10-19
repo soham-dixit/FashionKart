@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema({
     city: {
         type: String,
         required: true,
+    },
+    imageUrl: {
+        type: String,
     }
 });
 

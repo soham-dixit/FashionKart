@@ -22,6 +22,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../axios/axios";
 import flask from "../../axios/flask";
 import img from "./Fashion.png"
+import { useSelector } from "react-redux";
 
 const StyledHeader = styled(AppBar)`
   background: #0071dc;
@@ -69,13 +70,17 @@ const Header = () => {
     "https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png";
 
   const [buttonText, setButtonText] = useState('Upload Avatar');
+  const [tryONButtonText, setTryONButtonText] = useState('Try On');
   const [buttonColor, setButtonColor] = useState('#0a2036ac'); // default color for the button
   const [txtc, settxtc] = useState('#ffffff'); // dfefault color for the button
+
+  const { user } = useSelector((state) => state.user);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      submitFile(event);
+      // submitFile(event);
+      submitTryOnFile(event);
       setButtonText('Uploaded');
       setButtonColor('#ffc220');
       settxtc('#000000de')
@@ -91,23 +96,43 @@ const Header = () => {
     setOpen(false);
   };
 
-  const submitFile = async (e) => {
+  // const submitFile = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   const formData = new FormData();
+  //   formData.append("file", e.target.files[0]);
+
+  //   try {
+  //     const { data } = await axios.post("/upload", formData);
+  //     console.log(data);
+  //     const id = await flask.post("/get_image_id", {
+  //       imageUrl: `http://localhost:8000/uploads/${data.image.filename}`,
+  //     });
+
+  //     navigate(`/home/product/${id.data.image_id}`);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  const submitTryOnFile = async (e) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-
+    const userId = user.userId;
+    formData.append("userId", userId);
+    console.log("userId", userId);
+  
     try {
-      const { data } = await axios.post("/upload", formData);
-      console.log(data);
-      const id = await flask.post("/get_image_id", {
-        imageUrl: `http://localhost:8000/uploads/${data.image.filename}`,
-      });
-
-      navigate(`/home/product/${id.data.image_id}`);
+      const { data } = await axios.post("http://localhost:8000/api/v4/try-on", formData);
+      console.log(data); // Debug to see if the response is received
+      navigate(`/`);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error); // Debug to see the error
       setLoading(false);
     }
   };
@@ -182,6 +207,26 @@ const Header = () => {
               style={{ backgroundColor: buttonColor, color:txtc}}
             >
               {buttonText}
+            </Button>
+          </label>
+        </form>
+
+        <form encType="multipart/form-data" style={{ marginLeft: '16px', cursor: 'pointer' }}>
+          <input
+            type="file"
+            name="file"
+            accept="image/*" // only allow image files
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+            id="file-input"
+          />
+          <label htmlFor="file-input">
+            <Button
+              variant="contained"
+              component="span"
+              style={{ backgroundColor: buttonColor, color:txtc}}
+            >
+              {tryONButtonText}
             </Button>
           </label>
         </form>

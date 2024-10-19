@@ -3,6 +3,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+import firebaseAdmin from 'firebase-admin';
+import { v4 as uuidv4 } from 'uuid';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const serviceAccount = require('./firebase-admin-sdk.json');
+
 import multer from "multer";
 
 const storage = multer.diskStorage({
@@ -31,6 +38,7 @@ import purchasingHistoryRouter from "./routes/purchasingHistory.route.js";
 import browsingHistoryRouter from "./routes/browsingHistory.route.js";
 import cartHistoryRouter from "./routes/cartHistory.route.js";
 import frequentDataRouter from "./routes/frequentData.route.js";
+import UserModel from "./model/user.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -55,7 +63,6 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Import routers
 app.post("/api/v4/upload", upload.single("file"), (req, res) => {
   res.status(200).json({
     success: true,
@@ -63,6 +70,51 @@ app.post("/api/v4/upload", upload.single("file"), (req, res) => {
     image: req.file,
   });
 });
+
+const admin = firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount),
+});
+
+const storageRef = admin.storage().bucket(`gs://fashionkart-26db7.appspot.com/`);
+
+async function uploadFile(filePath, filename) {
+  const storage = await storageRef.upload(filePath, {
+      public: true,
+      destination: `userImages/${filename}`,
+      metadata: {
+          firebaseStorageDownloadTokens: uuidv4(),
+      }
+  });
+
+  return storage[0].metadata.mediaLink;
+}
+
+app.post("/api/v4/try-on", upload.single("file"), async (req, res) => {
+  const file = req.file;
+  const filePath = file.path;
+  var filename = file.filename;
+  filename = filename.replace(/\s/g, "");
+  const userId = req.body.userId;
+  console.log("userId", userId);
+  
+
+  const imageUrl = await uploadFile(filePath, filename);
+
+  const user = await UserModel.findOne({ userId });
+  console.log("user", user);
+
+  if (!user) {
+    return createError(req, res, next, "User doesn't exist", 404);
+  }
+
+  await UserModel.updateOne({ userId }, { $set: { imageUrl } });
+  
+  res.status(200).json({
+    success: true,
+    message: "Image uploaded successfully",
+    imageUrl: imageUrl,
+  });
+} );
 
 app.use("/api/v4/auth", authRouter);
 app.use("/api/v4/product", productRouter);

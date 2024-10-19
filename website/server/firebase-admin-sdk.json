@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "fashionkart-26db7",
+  "private_key_id": "6d1cd78cfa4744603b365e5f02530ae0c81600d3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+CA95+/hz4xV6\nW5wZtjUN9mRrunp31KT8+6wm0zNaz2X7SYPDCchuyc6GVuTEbNLAWRRWH2qfDvk5\nLqhXAAXMo3V8FZ8TNBMdxpO2tOMXhBnEUmkNCG3hR5ZW0xyxBZ3pQUiuihejCSdZ\nrGFcBT0sZg0d0gD+ZwMHi49FgwFV07+7PZ5FQUj78iTJrOq+QogjPkFNiPc4Vsca\n8ccWh/5wMsa6HkvqIj+gDQXYRtniLVHZdvme9HktodG1kUf82fx0M2xypbWXHvDv\nOSAEhGUafa1XzjWgVo7JCA+kGz8Fpa6JHuRMxZLFN0oJnVdUCsdPHcS3K0+OJWkQ\nYmN5qoDvAgMBAAECggEABNXIqwZlunEfNUdKb/8KV4oa4QDUJ+NhtUwkA7Lg/iED\ny8KBlz9S+bqpxhJE7NiF/j3l/hD7kgN8BN/yiZAnFZ9dGGSmcQMkr1/Dl2T/2DPU\nwgGEyb+aqB49rYTemIR3kZ1HH6XE1zGe7jGsIn7BoTURhV44B0EQuyrqYM7mBEx9\nMz1G2/Y4sritUuzru0cTeXUfo21w7CKc3FBvQCnpWdSe/5zKOH9bzMzRwRLor86v\nnIXg1lhpeWaxJdoj5rlgn40zyrmBIv8ptuFa6q2huvZ/mUJzon6uPMKAyt6hF9ZJ\nZo5mJnfXvvf2IsQulhnauPcI1VXWFMl+1rIs8yxsIQKBgQDwCtVbn5uVZ76RwC/y\nmKEzOC5Ld1xSgmWpHw4U/I3Qu2tu6pdmvISJw/Ny0LLKfQLbHdjR/QXfLbDovkDs\nY2ZjLt4hlz/8kTa9Sg6Fvm1BS2K3RwciSALcOsA9be9fCej67Jcs7TdpQUb5hmln\nw9qrNmqcJX7iOaGDEk0PopA1DwKBgQDKqh3JU7rwnPiw9VbLcPZ/l68mMEfDZ1Uj\nXlRLiGmOshio6W2W6foV8OJMMez8odO8Utb62J/y13ZQbxg0x2OUNyi3ywBrL8Xb\nXNinAtb7MAUmxQGVinsKYVaNJUu8mfYVMxcm7aRj4hfoT+CYZTXk2xj5sAuMK1v2\niytCSPW2IQKBgDKz5xtCXGezkTJSKQ6SJMKf5E92d97JwlV1xNC0A/SKEghMrww5\nV7mN1Vd0M7/HphnIdSrtyha5HPwca7RCzra2iJ8Jxq8/sRNMmEKx1XwMQ165Nw2L\nrmb8Vezj0sL9YePWo5wOwzyNWEOOm6caXI77oIs49FMunyoDbJmX2eQLAoGBAMn3\n/vdEmmhwBudTmMvmJ8HASKymMN5rfE1jFF6x84BhvHGZL73WL4TuKpgEqUibfYeQ\nhu42NDCuyRofnN/8VSDAV7PSevhXA7c5MDBAhD6P/JJGgu2ktDoEB11ibbfnN3ap\nE8mXytw/1dOOxyUYuDz6nEk5SEjIbT2mM9Y7H6QBAoGACbJL1zq6Z/1xVJYNvjpN\ndtSt7aWCqY3yuispKhv/jVWA0kU0ns30OkkjIFMv+QVkyrJTeafg4c/jqMmJCxrW\ncuF+v39GMFjky/q/04LYKIUgHdpc4eCaZKfGAxQEI30tklAZIo+B8Lq+Z2uYqlnV\nITOSSi67LvSTzQW16BkaKJE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-mw0iu@fashionkart-26db7.iam.gserviceaccount.com",
+  "client_id": "112184210298532614937",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mw0iu%40fashionkart-26db7.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
