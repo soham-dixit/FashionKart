@@ -69,23 +69,38 @@ const Header = () => {
   const subUrl =
     "https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png";
 
-  const [buttonText, setButtonText] = useState('Upload Avatar');
-  const [tryONButtonText, setTryONButtonText] = useState('Try On');
+  const [buttonText, setButtonText] = useState('Reverse Product');
   const [buttonColor, setButtonColor] = useState('#0a2036ac'); // default color for the button
   const [txtc, settxtc] = useState('#ffffff'); // dfefault color for the button
+
+  const [tryOnButtonText, setTryOnButtonText] = useState('Try On');
+  const [tryOnbuttonColor, setTryOnButtonColor] = useState('#0a2036ac'); // default color for the button
+  const [txtcTry, settxtcTry] = useState('#ffffff');
 
   const { user } = useSelector((state) => state.user);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // submitFile(event);
-      submitTryOnFile(event);
+      submitFile(event);
+      // submitTryOnFile(event);
       setButtonText('Uploaded');
       setButtonColor('#ffc220');
       settxtc('#000000de')
     }
   };
+
+  const handleTryOnFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // submitFile(event);
+      submitTryOnFile(event);
+      setTryOnButtonText('Uploaded');
+      setTryOnButtonColor('#ffc220');
+      settxtcTry('#000000de')
+    }
+  };
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -96,26 +111,26 @@ const Header = () => {
     setOpen(false);
   };
 
-  // const submitFile = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   const formData = new FormData();
-  //   formData.append("file", e.target.files[0]);
+  const submitFile = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
 
-  //   try {
-  //     const { data } = await axios.post("/upload", formData);
-  //     console.log(data);
-  //     const id = await flask.post("/get_image_id", {
-  //       imageUrl: `http://localhost:8000/uploads/${data.image.filename}`,
-  //     });
+    try {
+      const { data } = await axios.post("/upload", formData);
+      console.log(data);
+      const id = await flask.post("/get_image_id", {
+        imageUrl: `http://localhost:8000/uploads/${data.image.filename}`,
+      });
 
-  //     navigate(`/home/product/${id.data.image_id}`);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoading(false);
-  //   }
-  // };
+      navigate(`/home/product/${id.data.image_id}`);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   const submitTryOnFile = async (e) => {
     e.preventDefault();
@@ -216,17 +231,17 @@ const Header = () => {
             type="file"
             name="file"
             accept="image/*" // only allow image files
-            onChange={handleFileChange}
+            onChange={handleTryOnFileChange}
             style={{ display: 'none' }}
-            id="file-input"
+            id="file-input1"
           />
-          <label htmlFor="file-input">
+          <label htmlFor="file-input1">
             <Button
               variant="contained"
               component="span"
-              style={{ backgroundColor: buttonColor, color:txtc}}
+              style={{ backgroundColor: tryOnbuttonColor, color:txtcTry}}
             >
-              {tryONButtonText}
+              {tryOnButtonText}
             </Button>
           </label>
         </form>

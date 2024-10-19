@@ -2,7 +2,8 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
+import fs from "fs";
+// const { v4: uuidv4 } = require("uuid");
 import firebaseAdmin from "firebase-admin";
 import { v4 as uuidv4 } from "uuid";
 import { createRequire } from "module";
@@ -17,8 +18,9 @@ const storage = multer.diskStorage({
     cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + file.originalname);
+    // Use only the UUID for simplicity
+    const uniqueSuffix = uuidv4(); // Generates a unique identifier
+    cb(null, uniqueSuffix + path.extname(file.originalname)); // Retain the original file extension
   },
 });
 
@@ -97,18 +99,26 @@ app.post("/api/v4/try-on", upload.single("file"), async (req, res) => {
   var filename = file.filename;
   filename = filename.replace(/\s/g, "");
   const userId = req.body.userId;
-  console.log("userId", userId);
+  // console.log("userId", userId);
 
   const imageUrl = await uploadFile(filePath, filename);
 
   const user = await UserModel.findOne({ userId });
-  console.log("user", user);
+  // console.log("user", user);
 
   if (!user) {
     return createError(req, res, next, "User doesn't exist", 404);
   }
 
   await UserModel.updateOne({ userId }, { $set: { imageUrl } });
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error deleting local file:", err);
+    } else {
+      console.log("Local file deleted successfully");
+    }
+  });
 
   res.status(200).json({
     success: true,

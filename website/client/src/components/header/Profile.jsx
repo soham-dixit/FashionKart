@@ -38,7 +38,7 @@ const Profile = ({account, setAccount}) => {
   return (
     <>
     <Box onClick={handleClick} >
-        <Typography style={{marginTop: 3, marginRight:'60px', cursor: 'pointer'}}> {account.name} </Typography>
+        <Typography style={{marginTop: 3, marginRight:'20px', cursor: 'pointer'}}> {account.name} </Typography>
     </Box>
     <Component
         anchorEl={open}
