@@ -11,4 +11,5 @@ website/server/product_images
 website/server/.env
 website/server/firebase-admin-sdk.json
 clothes-extraction/cloth_segm.pth
+flaskApi/.env
 # build

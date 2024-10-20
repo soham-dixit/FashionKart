@@ -6,8 +6,10 @@ import base64
 import os
 import firebase_admin
 from firebase_admin import credentials, storage
+from dotenv import load_dotenv
 
 FITTED_IMAGES_FOLDER = "./fitted_images/"
+load_dotenv()
 
 # Initialize Firebase Admin SDK with credentials JSON
 cred = credentials.Certificate('D:\\Projects\\Flipkart GRiD 5.0\\new\\fashionkart\\chatbot\\actions\\firebase-admin-sdk.json')  # Replace with the path to your service account JSON
@@ -30,7 +32,7 @@ async def to_b64(img_url: str) -> str:
 
 async def segmind_diffusion(cloth_image_path: str = None, model_image_path: str = None, cloth_image_url: str = None, model_image_url: str = None, clothing_category: str = None):
     print("Segmind diffusion called")
-    api_key = "SG_41018d49bb5fa3f9"
+    api_key = os.getenv("SEGMIND_API_KEY")
     url = "https://api.segmind.com/v1/try-on-diffusion"
 
     if model_image_path:
