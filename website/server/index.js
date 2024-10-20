@@ -99,19 +99,22 @@ app.post("/api/v4/try-on", upload.single("file"), async (req, res) => {
   var filename = file.filename;
   filename = filename.replace(/\s/g, "");
   const userId = req.body.userId;
-  // console.log("userId", userId);
 
   const imageUrl = await uploadFile(filePath, filename);
 
   const user = await UserModel.findOne({ userId });
-  // console.log("user", user);
 
   if (!user) {
     return createError(req, res, next, "User doesn't exist", 404);
   }
 
-  await UserModel.updateOne({ userId }, { $set: { imageUrl } });
+  // Update or create the imageUrl field
+  await UserModel.updateOne(
+    { userId },
+    { $set: { imageUrl } } // This will overwrite the existing imageUrl with the new one
+  );
 
+  // Delete the local file
   fs.unlink(filePath, (err) => {
     if (err) {
       console.error("Error deleting local file:", err);

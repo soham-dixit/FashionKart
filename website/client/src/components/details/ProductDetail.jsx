@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
-import { Box, Typography, styled, Table, TableBody, TableRow, TableCell } from '@mui/material';
+import React, { useState } from 'react'; // Import useState for dialog state management
+import { Box, Typography, styled, Table, TableBody, TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { LocalOffer as Badge } from '@mui/icons-material';
-import img1 from './image1.png'
-import img2 from './image.png'
-import img3 from './image3.png'
-import fassured from './fass.svg'
+import img1 from './image1.png';
+import img2 from './image.png';
+import img3 from './image3.png';
+import fassured from './fass.svg';
+import axios from "../../axios/axios";
+import flask from "../../axios/flask";
 
 const SmallText = styled(Box)`
     font-size: 14px;
@@ -13,13 +15,25 @@ const SmallText = styled(Box)`
         font-size: 14px;
         margin-top: 10px;
     }
-`
+`;
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  width: "46%",
+  height: "50px",
+  borderRadius: "2px",
+  [theme.breakpoints.down("lg")]: {
+    width: "44%",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "46%",
+  },
+}));
 
 const StyledBadge = styled(Badge)`
     margin-right: 10px;
     color: #00cc00;
     font-size: 15px;
-`
+`;
 
 const ColumnText = styled(TableRow)`
     font-size: 14px;
@@ -29,15 +43,41 @@ const ColumnText = styled(TableRow)`
         margin-top: 10px;
         border: none;
     }
-`
+`;
 
 const ProductDetail = ({ product }) => {
+    const date = new Date(new Date().getTime() + (5 * 24 * 60 * 60 * 1000));
+    
+    const [open, setOpen] = useState(false);
+    const [imageUrl, setImageUrl] = useState(null); 
 
-    // const fassured = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png';
+  const handleClickOpen = async () => {
+    try {
+      setOpen(true);
 
-    // const supercoin = 'https://rukminim1.flixcart.com/lockin/774/185/images/CCO__PP_2019-07-14.png?q=50';
+      const productId =  `${product.product_id}`;
+      const payload = { productId };
 
-    const date = new Date(new Date().getTime() + (5 * 24 * 60 * 60 * 1000))
+      const response = await flask.post('/virtual_try_on', payload, {
+        withCredentials: true,
+      });
+        
+        if (response.status === 200) {
+            console.log('Image Path:', response.data.imagePath);
+            setImageUrl(response.data.imagePath);
+      } else {
+        console.log('Failed to get image ID');
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      }
+  };
+
+    // Function to handle dialog close
+    const handleClose = () => {
+        setOpen(false);
+        setImageUrl(null);
+    };
 
     return (
         <>
@@ -55,10 +95,52 @@ const ProductDetail = ({ product }) => {
                 <Box component='span' style={{ fontSize: 28 }}>₹{product?.price}</Box>&nbsp;&nbsp;&nbsp;
                 <Box component='span' style={{ color: '#388E3C' }}>{product?.category}</Box>
             </Typography>
+            
+            {/* Button to open the dialog */}
+            <StyledButton
+                variant="contained"
+                onClick={handleClickOpen} // Link to open dialog
+                style={{
+                    marginRight: 10,
+                    background: "#0071dc",
+                    fontWeight: "bold",
+                    marginTop: 10,
+                    marginBottom: 10
+                }}    
+            >
+                Virtual Try On
+            </StyledButton>
+
+            {/* Dialog component */}
+            <Dialog open={open} onClose={handleClose}>
+    <DialogTitle>Virtual Try On</DialogTitle>
+<DialogContent style={{ overflowY: 'hidden', display: 'flex', justifyContent: 'center' }}>
+    {imageUrl ? (
+        <img 
+            src={imageUrl} 
+            alt="Virtual Try On" 
+            style={{ 
+                maxWidth: '100%',  // Set to 100% to make it responsive horizontally
+                maxHeight: '100%', // Set to 100% to make it responsive vertically
+                objectFit: 'contain' // Ensure the image fits within the container without stretching
+            }} 
+        />
+    ) : (
+        <Typography>Loading image...</Typography>
+    )}
+</DialogContent>
+
+    <DialogActions>
+        <StyledButton onClick={handleClose} color="primary">
+            Close
+        </StyledButton>
+    </DialogActions>
+</Dialog>
+
             <Typography>Available Offers</Typography>
             <SmallText>
                 <Typography><StyledBadge />5% Cashback on Axis Bank Card T&C</Typography>
-                <Typography ><StyledBadge />Buy this Product and Get Extra ₹500 Off on Two-Wheelers T&C</Typography>
+                <Typography><StyledBadge />Buy this Product and Get Extra ₹500 Off on Two-Wheelers T&C</Typography>
                 <Typography><StyledBadge />Get GST Invoice Available & Save up to 28% for Business purchases on Electronics Know More</Typography>
                 <Typography><StyledBadge />Buy this product and get upto ₹500 off on Furniture</Typography>
                 <Typography><StyledBadge />Sign up for Pay Later and get Gift Card worth up to ₹500* Know More</Typography>
@@ -86,7 +168,6 @@ const ProductDetail = ({ product }) => {
 
                     <ColumnText>
                         <TableCell colSpan={2}>
-                            {/* <img src={img1} alt="" style={{width: 390}}/> */}
                             <img src={img2} alt="" style={{ width: 390, paddingBottom: '2px' }} />
                             <img src={img3} alt="" style={{ width: 390, marginLeft: '10px' }} />
                         </TableCell>
@@ -94,14 +175,12 @@ const ProductDetail = ({ product }) => {
 
                     <ColumnText>
                         <TableCell style={{ color: '#878787' }}>Quote:</TableCell>
-                        <TableCell>"Style is a way to say who you are without having to speak." - Rachel Zoe
-                        </TableCell>
+                        <TableCell>"Style is a way to say who you are without having to speak." - Rachel Zoe</TableCell>
                     </ColumnText>
-
                 </TableBody>
             </Table>
         </>
-    )
+    );
 }
 
-export default ProductDetail
+export default ProductDetail;
