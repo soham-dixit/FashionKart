@@ -30,7 +30,7 @@ async def to_b64(img_url: str) -> str:
 
 async def segmind_diffusion(cloth_image_path: str = None, model_image_path: str = None, cloth_image_url: str = None, model_image_url: str = None, clothing_category: str = None):
     print("Segmind diffusion called")
-    api_key = ""
+    api_key = "SG_41018d49bb5fa3f9"
     url = "https://api.segmind.com/v1/try-on-diffusion"
 
     if model_image_path:

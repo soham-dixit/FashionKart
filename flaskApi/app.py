@@ -205,7 +205,7 @@ async def virtual_try_on():
 
         cookie = request.cookies.get('auth-token')
         if not cookie:
-            return jsonify({'message': 'Missing auth token'}), 401
+            return jsonify({'message': 'Missing auth token'}), 600
 
         try:
             decoded_payload = jwt.decode(cookie, token_secret, algorithms=['HS256'], verify=False)

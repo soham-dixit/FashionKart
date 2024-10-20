@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import useState for dialog state management
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, styled, Table, TableBody, TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { LocalOffer as Badge } from '@mui/icons-material';
 import img1 from './image1.png';
@@ -51,10 +51,10 @@ const ProductDetail = ({ product }) => {
     const [open, setOpen] = useState(false);
     const [imageUrl, setImageUrl] = useState(null); 
 
-  const handleClickOpen = async () => {
-    try {
-      setOpen(true);
-
+    const handleClickOpen = async () => {
+        setImageUrl(null);
+        setOpen(true);
+      try {
       const productId =  `${product.product_id}`;
       const payload = { productId };
 
@@ -62,9 +62,9 @@ const ProductDetail = ({ product }) => {
         withCredentials: true,
       });
         
-        if (response.status === 200) {
+          if (response.status === 200) {
             console.log('Image Path:', response.data.imagePath);
-            setImageUrl(response.data.imagePath);
+            setImageUrl(`${response.data.imagePath}?t=${new Date().getTime()}`);
       } else {
         console.log('Failed to get image ID');
       }
