@@ -9,7 +9,11 @@ import flaskAxios from "../../axios/flask";
 
 const LeftContainer = styled(Box)(({ theme }) => ({
   minWidth: "40%",
-  padding: "40px 0 0 80px",
+  padding: "40px 0 0 80px", // Adjust padding here
+  paddingLeft: "20px", // Add left padding for space from the border
+  paddingRight: "20px", // Optional: Add right padding if needed
+  paddingTop: "20px", // Add top padding for space from the top border
+  paddingBottom: "20px", // Optional: Add bottom padding for space from the bottom border
   [theme.breakpoints.down("lg")]: {
     padding: "20px 40px",
   },

@@ -81,7 +81,7 @@ const ProductDetail = ({ product }) => {
     };
 
     return (
-        <>
+        <Box sx={{ marginLeft: 5 }}>
             <Typography> {product?.product_display_name} </Typography>
 
             <Typography style={{ marginTop: 5, color: '#878787', fontSize: 14 }}>
@@ -102,12 +102,12 @@ const ProductDetail = ({ product }) => {
                 variant="contained"
                 onClick={handleClickOpen} // Link to open dialog
                 style={{
-                    width:'35%',
+                    width:'20%',
                     marginRight: 10,
                     background: "#73EC8B",
                     color:'#000000',
                     fontWeight: "bold",
-                    marginTop: 10,
+                    marginTop: 20,
                     marginBottom: 10
                 }}    
             >
@@ -140,13 +140,13 @@ const ProductDetail = ({ product }) => {
     </DialogActions>
 </Dialog>
 
-            <Typography>Available Offers</Typography>
+            <Typography style={{marginTop:30}}>Available Offers</Typography>
             <SmallText>
                 <Typography><StyledBadge />5% Cashback on Axis Bank Card T&C</Typography>
                 <Typography><StyledBadge />Sign up for Pay Later and get Gift Card worth up to ₹500* Know More</Typography>
             </SmallText>
 
-            <Table>
+            <Table style={{marginTop:30}}>
                 <TableBody>
                     <ColumnText>
                         <TableCell style={{ color: '#878787' }}>Delivery</TableCell>
@@ -167,7 +167,7 @@ const ProductDetail = ({ product }) => {
                     </ColumnText>
                 </TableBody>
             </Table>
-        </>
+            </Box>
     );
 }
 
