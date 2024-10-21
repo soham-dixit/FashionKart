@@ -211,7 +211,7 @@ const LoginDialog = ({ open = true }) => {
                   {/* {account.subHeading}{" "} */}
                 </Typography>
                 <Typography style={{textDecoration: 'underline', color: '#000000' }}>
-                <a href="https://corporate.walmart.com/privacy-security">
+                <a href="https://google.com/">
                   {"See our privacy measures."}
                   </a>
                 </Typography>
@@ -240,10 +240,10 @@ const LoginDialog = ({ open = true }) => {
                     By continuing, you agree to FashionGen's Terms of Use and
                     Privacy Policy.
                   </Text>
-                  <LoginButton style={{backgroundColor:"#0071dc"}} onClick={() => loginUser()}>Login</LoginButton>
+                  <LoginButton style={{backgroundColor:"#73EC8B", color:"#000000", fontWeight:"600"}} onClick={() => loginUser()}>Login</LoginButton>
                   <Typography style={{ textAlign: "center" }}>OR</Typography>
-                  <RequestOTP style={{backgroundColor:"#0071dc", color:"#ffffff"}}>Request OTP</RequestOTP>
-                  <CreateAccount style={{color:"#ffc220"}} onClick={() => toggleSignup()}>
+                  <RequestOTP style={{backgroundColor:"#73EC8B", color:"#000000", fontWeight:"600"}}>Request OTP</RequestOTP>
+                  <CreateAccount style={{color:"#267b69"}} onClick={() => toggleSignup()}>
                     New to FashionGen? Create an account
                   </CreateAccount>
                 </Wrapper>
@@ -293,7 +293,7 @@ const LoginDialog = ({ open = true }) => {
                     label="Enter City"
                   />
 
-                  <LoginButton style={{backgroundColor:"#0071dc", color:"#ffffff"}} onClick={() => signupUser()}>
+                  <LoginButton style={{backgroundColor:"#73EC8B", color:"#000000", fontWeight:"600"}} onClick={() => signupUser()}>
                     Continue
                   </LoginButton>
                 </Wrapper>

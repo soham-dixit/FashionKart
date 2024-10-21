@@ -76,13 +76,13 @@ const ActionItem = ({ product }) => {
       <StyledButton
         variant="contained"
         onClick={() => addItemToCart()}
-        style={{ marginRight: 10, background: "#0071dc", fontWeight: "bold" }}
+        style={{ marginRight: 10.5, background: "#73EC8B", color:'#000000', fontWeight: "bold" }}
       >
         <Cart /> Add to Cart
       </StyledButton>
       <StyledButton
         variant="contained"
-        style={{ marginRight: 10, background: "#fb641b", fontWeight: "bold", backgroundColor:"#ffc220"}}
+        style={{ marginRight: 10, background: "#73EC8B", color:'#000000', fontWeight: "bold"}}
       >
         <Flash /> Buy Now
       </StyledButton>

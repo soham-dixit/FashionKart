@@ -117,7 +117,7 @@ const Home = () => {
         <Button
           variant="contained"
           size="large"
-          style={{ backgroundColor: '#0071dc', color: 'white' }}
+          style={{ backgroundColor: '#73EC8B', color: 'black' }}
         >
           Ask AI 🤖
         </Button>
@@ -126,7 +126,7 @@ const Home = () => {
         <Button
           variant="contained"
           size="large"
-          style={{ backgroundColor: '#0071dc', color: 'white' }}
+          style={{ backgroundColor: '#73EC8B', color: 'black' }}
         >
           Explore 🔍
         </Button>

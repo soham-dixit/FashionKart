@@ -83,7 +83,7 @@ const Cart = () => {
               }
 
               <ButtonWrapper>
-                <StyledButton style={{ backgroundColor:'#0071dc'}} onClick={placeOrder}>Place Order</StyledButton>
+                <StyledButton style={{ backgroundColor:'#73EC8B'}} onClick={placeOrder}>Place Order</StyledButton>
               </ButtonWrapper>
             </LeftComponent>
 

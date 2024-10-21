@@ -33,8 +33,8 @@ const Message = styled("div")(({ theme, type }) => ({
   padding: theme.spacing(1),
   borderRadius: "8px",
   maxWidth: "80%",
-  backgroundColor: type === "user" ? "#0071dc" : "#f0f0f0",
-  color: type === "user" ? "#f0f0f0" : "#000000",
+  backgroundColor: type === "user" ? "#73EC8B" : "#D2FF72",
+  color: "#000000",
   fontSize: "18px",
   alignSelf: type !== "user" ? "flex-start" : "flex-end",
   width: "fit-content",
@@ -193,7 +193,7 @@ function Chat() {
         <Button
           variant="contained"
           size="large"
-          style={{ backgroundColor: '#0071dc', color: 'white' }}
+          style={{ backgroundColor: '#73EC8B', color: 'black' }}
         >
           Ask AI 🤖
         </Button>
@@ -202,7 +202,7 @@ function Chat() {
         <Button
           variant="contained"
           size="large"
-          style={{ backgroundColor: '#0071dc', color: 'white' }}
+          style={{ backgroundColor: '#73EC8B', color: 'black' }}
         >
           Explore 🔍
         </Button>
@@ -271,9 +271,9 @@ function Chat() {
               <IconButtonStyled onClick={handleSend}>
                 <SendIcon />
               </IconButtonStyled>
-              <IconButtonStyled onClick={handleVoice}>
+              {/* <IconButtonStyled onClick={handleVoice}>
                 <MicIcon color={listening ? "primary" : "inherit"} />
-              </IconButtonStyled>
+              </IconButtonStyled> */}
             </ChatBox>
           </Grid>
         </Grid>

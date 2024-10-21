@@ -102,8 +102,10 @@ const ProductDetail = ({ product }) => {
                 variant="contained"
                 onClick={handleClickOpen} // Link to open dialog
                 style={{
+                    width:'35%',
                     marginRight: 10,
-                    background: "#0071dc",
+                    background: "#73EC8B",
+                    color:'#000000',
                     fontWeight: "bold",
                     marginTop: 10,
                     marginBottom: 10
@@ -141,9 +143,6 @@ const ProductDetail = ({ product }) => {
             <Typography>Available Offers</Typography>
             <SmallText>
                 <Typography><StyledBadge />5% Cashback on Axis Bank Card T&C</Typography>
-                <Typography><StyledBadge />Buy this Product and Get Extra ₹500 Off on Two-Wheelers T&C</Typography>
-                <Typography><StyledBadge />Get GST Invoice Available & Save up to 28% for Business purchases on Electronics Know More</Typography>
-                <Typography><StyledBadge />Buy this product and get upto ₹500 off on Furniture</Typography>
                 <Typography><StyledBadge />Sign up for Pay Later and get Gift Card worth up to ₹500* Know More</Typography>
             </SmallText>
 
@@ -155,22 +154,10 @@ const ProductDetail = ({ product }) => {
                     </ColumnText>
 
                     <ColumnText>
-                        <TableCell style={{ color: '#878787' }}>Warranty</TableCell>
-                        <TableCell>1 Year</TableCell>
-                    </ColumnText>
-
-                    <ColumnText>
                         <TableCell style={{ color: '#878787' }}>Seller</TableCell>
                         <TableCell>
                             <Box style={{ color: '#2874f0' }} component='span'>SuperComNet</Box>
                             <Typography>GST Invoice Available</Typography>
-                        </TableCell>
-                    </ColumnText>
-
-                    <ColumnText>
-                        <TableCell colSpan={2}>
-                            <img src={img2} alt="" style={{ width: 390, paddingBottom: '2px' }} />
-                            <img src={img3} alt="" style={{ width: 390, marginLeft: '10px' }} />
                         </TableCell>
                     </ColumnText>
 

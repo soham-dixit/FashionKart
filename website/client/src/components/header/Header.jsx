@@ -70,12 +70,12 @@ const Header = () => {
     "https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/plus_aef861.png";
 
   const [buttonText, setButtonText] = useState('Reverse Product');
-  const [buttonColor, setButtonColor] = useState('#0a2036ac'); // default color for the button
-  const [txtc, settxtc] = useState('#ffffff'); // dfefault color for the button
+  const [buttonColor, setButtonColor] = useState('#E5E4E2'); // default color for the button
+  const [txtc, settxtc] = useState('#000000'); // dfefault color for the button
 
   const [tryOnButtonText, setTryOnButtonText] = useState('Try On');
-  const [tryOnbuttonColor, setTryOnButtonColor] = useState('#0a2036ac'); // default color for the button
-  const [txtcTry, settxtcTry] = useState('#ffffff');
+  const [tryOnbuttonColor, setTryOnButtonColor] = useState('#E5E4E2'); // default color for the button
+  const [txtcTry, settxtcTry] = useState('#000000');
 
   const { user } = useSelector((state) => state.user);
 
@@ -85,8 +85,8 @@ const Header = () => {
       submitFile(event);
       // submitTryOnFile(event);
       setButtonText('Uploaded');
-      setButtonColor('#ffc220');
-      settxtc('#000000de')
+      setButtonColor('#0a2036ac');
+      settxtc('#ffffff')
     }
   };
 
@@ -96,8 +96,8 @@ const Header = () => {
       // submitFile(event);
       submitTryOnFile(event);
       setTryOnButtonText('Uploaded');
-      setTryOnButtonColor('#ffc220');
-      settxtcTry('#000000de')
+      setTryOnButtonColor('#0a2036ac');
+      settxtcTry('#ffffff')
     }
   };
 
@@ -163,7 +163,7 @@ const Header = () => {
   );
 
   return (
-    <StyledHeader position="fixed">
+    <StyledHeader position="fixed" style={{backgroundColor:'#15B392'}}>
       <Toolbar style={{ minHeight: 55 }}>
         <MenuButton aria-label="delete" color="inherit" onClick={handleOpen}>
           <Menu />
@@ -190,7 +190,7 @@ const Header = () => {
             color: 'inherit',
             transition: 'color 0.3s ease',
           }}
-            onMouseOver={(e) => e.currentTarget.style.color = '#ffc220'}
+            onMouseOver={(e) => e.currentTarget.style.color = '#267b69'}
             onMouseOut={(e) => e.currentTarget.style.color = 'inherit'}>
             FashionGen
           </Typography>
