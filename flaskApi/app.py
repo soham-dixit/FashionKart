@@ -292,6 +292,13 @@ def handle_conversation():
 
     return jsonify({"response": response})
 
+# API to clear the conversation history/memory
+@app.route('/clear_chat', methods=['POST'])
+def clear_chat():
+    user_id = request.json.get('userId')
+    user_conversations[user_id] = []
+    return jsonify({"message": "Chat history cleared"})
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({"status": "Healthy"})
