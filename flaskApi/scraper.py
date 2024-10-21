@@ -1,37 +1,6 @@
 import requests
-import os
-import uuid
 from bs4 import BeautifulSoup
-import pandas as pd
-
-# Global variable to count images
-global count
-count = 0
-
-def download_image(image_url, string, save_directory='thumbnails'):
-    """Downloads an image from the provided URL and saves it to the specified directory."""
-    global count
-    try:
-        # Send a GET request to the image URL
-        response = requests.get(image_url)
-        response.raise_for_status()  # Check for any errors in the request
-
-        # Generate a unique filename using UUID
-        count += 1
-        unique_filename = string + '.jpg'
-
-        # Create the full path to save the image
-        save_path = os.path.join(save_directory, unique_filename)
-
-        # Save the image to the specified directory
-        with open(save_path, 'wb') as file:
-            file.write(response.content)
-
-        return save_path  # Return the unique file path
-
-    except Exception as e:
-        return str(e)  # Handle any exceptions and return an error message
-
+import json
 
 def get_title(soup):
     """Extracts the product title from the soup object."""
@@ -88,7 +57,6 @@ def get_product_details(query):
     HEADERS = {'User-Agent': '', 'Accept-Language': 'en-US, en;q=0.5'}
     webpage = requests.get(URL, headers=HEADERS)
     soup = BeautifulSoup(webpage.content, "html.parser")
-    # print(soup)
 
     # Extracting product links
     links = soup.find_all("a", attrs={'class': 'a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal'})
@@ -121,40 +89,19 @@ def get_product_details(query):
                 'image': image_link,
                 'link': amazon_url
             })
-         # Print product details to console
 
-    # Convert to DataFrame and save as CSV
-    amazon_df = pd.DataFrame(product_details)
-    amazon_df.to_csv("amazon_data.csv", header=True, index=False)
+    # Convert product details to JSON format
+    product_details_json = json.dumps(product_details, indent=4)
 
-    if not amazon_df.empty:
-        # Get details of the first product
-        first_product = amazon_df.iloc[0]
-
-        # Download product thumbnail
-        thumbnail_url = first_product['image']
-        unique_path = download_image(thumbnail_url, query)
-
-        # Format product details
-        product_details = f"""Product Name: {first_product['title']}
-Product Link: {first_product['link']}
-Current Price: ₹{first_product['price']}
-Availability: {first_product['availability']}
-Clothing: {query}"""
-
-        return unique_path, product_details
+    if product_details:
+        return product_details_json
     else:
-        return None, "No product details found."
+        return "No product details found."
 
 
 # Example usage
-search_string = "White Tshirt"
-thumbnail, details = get_product_details(search_string)
+search_string = "Cap"
+product_data_json = get_product_details(search_string)
 
-
-if thumbnail and details:
-    print("Thumbnail URL:", thumbnail)
-    print("Product Details:")
-    print(details)
-else:
-    print("No results found for the search string:", search_string)
+# Output JSON data
+print(product_data_json)
