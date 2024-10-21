@@ -55,8 +55,9 @@ const ProductDetail = ({ product }) => {
         setImageUrl(null);
         setOpen(true);
       try {
-      const productId =  `${product.product_id}`;
-      const payload = { productId };
+          const productId = `${product.product_id}`;
+          const category = product.category;
+            const payload = { productId, category };
 
       const response = await flask.post('/virtual_try_on', payload, {
         withCredentials: true,

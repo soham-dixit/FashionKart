@@ -198,8 +198,11 @@ async def virtual_try_on():
     try:
         print("Initialising virtual try on")
 
-        productId= request.json.get('productId')
+        productId = request.json.get('productId')
+        category = request.json.get('category')
         print(productId)
+        print(category)
+
         if not productId:
             return jsonify({'message': 'Product path is required'}), 400
 
@@ -229,7 +232,14 @@ async def virtual_try_on():
         print(f"Product image path: {product_image_path}")
         print(f"User image URL: {img_url}")
 
-        result = await try_on(cloth_image_path=product_image_path, person_image_path=None, cloth_image_url= None, person_image_url=img_url, clothing_category="Upper body")
+        if category == 'Topwear':
+            category = 'Upper body'
+        elif category == 'Bottomwear':
+            category = 'Lower body'
+        else:
+            category = 'Lower body'
+
+        result = await try_on(cloth_image_path=product_image_path, person_image_path=None, cloth_image_url= None, person_image_url=img_url, clothing_category=category)
 
         print(result+" is the result")
         return jsonify({'message': 'Virtual try on successful', 'imagePath': result}), 200
