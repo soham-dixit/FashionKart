@@ -112,27 +112,74 @@ def load_seg_model(checkpoint_path, device='cuda'):
     net = net.eval()
     return net.to(device)
 
-def save_transparent_image(image_pil, alpha_mask, final_output_with_white_bg_path):
-    original_image = np.array(image_pil.convert('RGBA'))
-    alpha_mask = cv2.resize(alpha_mask, (original_image.shape[1], original_image.shape[0]))
+# def save_transparent_image(image_pil, alpha_mask, final_output_with_white_bg_path):
+#     original_image = np.array(image_pil.convert('RGBA'))
+#     alpha_mask = cv2.resize(alpha_mask, (original_image.shape[1], original_image.shape[0]))
 
-    if original_image.shape[2] == 4:  
-        transparent_image = np.concatenate([original_image[:, :, :3], np.expand_dims(alpha_mask, axis=2)], axis=2)
-    else:
-        transparent_image = np.concatenate([original_image[:, :, :3], np.expand_dims(alpha_mask, axis=2)], axis=2)
+#     if original_image.shape[2] == 4:  
+#         transparent_image = np.concatenate([original_image[:, :, :3], np.expand_dims(alpha_mask, axis=2)], axis=2)
+#     else:
+#         transparent_image = np.concatenate([original_image[:, :, :3], np.expand_dims(alpha_mask, axis=2)], axis=2)
 
-    if transparent_image.shape[2] == 4:
-        b, g, r, a = cv2.split(transparent_image)
-        white_background = np.ones_like(transparent_image[:, :, :3]) * 255
-        alpha = a / 255.0
-        alpha_inv = 1.0 - alpha
-        for c in range(3):
-            white_background[:, :, c] = (alpha * transparent_image[:, :, c] + alpha_inv * white_background[:, :, c])
-        cv2.imwrite(final_output_with_white_bg_path, white_background)
-    else:
-        cv2.imwrite(final_output_with_white_bg_path, transparent_image)
+#     if transparent_image.shape[2] == 4:
+#         b, g, r, a = cv2.split(transparent_image)
+#         white_background = np.ones_like(transparent_image[:, :, :3]) * 255
+#         alpha = a / 255.0
+#         alpha_inv = 1.0 - alpha
+#         for c in range(3):
+#             white_background[:, :, c] = (alpha * transparent_image[:, :, c] + alpha_inv * white_background[:, :, c])
+#         cv2.imwrite(final_output_with_white_bg_path, white_background)
+#     else:
+#         cv2.imwrite(final_output_with_white_bg_path, transparent_image)
 
-output_dir = './output/'
+def save_transparent_image(original_image, alpha_mask, final_output_with_white_bg_path):
+    # Convert PIL Image to numpy array
+    original_image_np = np.array(original_image)
+    
+    # Resize alpha mask to match original image size
+    alpha_mask = cv2.resize(alpha_mask, (original_image_np.shape[1], original_image_np.shape[0]))
+    
+    # Normalize alpha mask to range 0-1
+    alpha_mask = alpha_mask.astype(float) / 255.0
+    
+    # Create a 4-channel RGBA image
+    rgba_image = np.zeros((original_image_np.shape[0], original_image_np.shape[1], 4), dtype=np.uint8)
+    
+    # Copy RGB channels from original image
+    rgba_image[:,:,:3] = original_image_np
+    
+    # Set alpha channel
+    rgba_image[:,:,3] = (alpha_mask * 255).astype(np.uint8)
+    
+    # Create a white background
+    white_bg = np.ones((original_image_np.shape[0], original_image_np.shape[1], 3), dtype=np.uint8) * 255
+    
+    # Blend the RGBA image with the white background
+    alpha = rgba_image[:,:,3:4].astype(float) / 255.0
+    blended = (rgba_image[:,:,:3] * alpha + white_bg * (1 - alpha)).astype(np.uint8)
+    
+    # Save the result
+    cv2.imwrite(final_output_with_white_bg_path, cv2.cvtColor(blended, cv2.COLOR_RGB2BGR))
+
+def process_and_save_image(image_path, product_id, id, model, palette):
+    try:
+        img = Image.open(image_path)
+        img = img.convert('RGB')
+        if img is None:
+            # print(f"Image at {image_path} is None.")
+            return
+        # print(f"Image loaded successfully: {image_path}, size: {img.size}, mode: {img.mode}")
+    except Exception as e:
+        # print(f"Error loading image from {image_path}: {e}")
+        return
+    
+    combined_alpha_mask, cloth_seg_image = generate_mask(img, model, palette)
+    alpha_mask = np.array(combined_alpha_mask)
+    output_path = os.path.join(output_dir, f"{id}_extracted.png")
+    
+    save_transparent_image(img, alpha_mask, output_path)
+
+output_dir = '../website/server/product_images/extracted_images/'
 os.makedirs(output_dir, exist_ok=True)
 
 def process_and_save_image(image_path, product_id, id, model, palette):
@@ -150,9 +197,9 @@ def process_and_save_image(image_path, product_id, id, model, palette):
 
 def main(args):
     csv_file = 'styles.csv'  # Assuming the dataset's CSV file is named 'styles.csv'
-    image_dir = '../new/fashionkart/website/server/product_images/images/'  # Assuming images are stored in './images/' directory
+    image_dir = '../website/server/product_images/images/'  # Assuming images are stored in './images/' directory
     df = pd.read_csv(csv_file)
-    
+     
     device = 'cuda'
     model = load_seg_model(args.checkpoint_path, device=device)
     palette = get_palette(4)
