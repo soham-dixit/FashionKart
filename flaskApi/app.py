@@ -12,6 +12,7 @@ import aiohttp
 import base64
 import os
 from tryon import try_on
+from gen_ai import send_request_to_gemini, send_request_to_openai_image_gen, summarize_conversation
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -238,6 +239,62 @@ async def virtual_try_on():
     except Exception as e:
         print(f"Error occurred: {e}")
         return jsonify({'message': 'Unauthorised'}), 400
+
+user_conversations = {}
+
+@app.route('/conversation', methods=['POST'])
+def handle_conversation():
+    data = request.json
+    user_id = data.get('userId')
+    message = data.get('message')
+
+    if message.strip().lower().startswith("/generate"):
+        prompt = message.strip().lower().replace("/generate", "").strip()
+
+        summary = None
+        conversation_history = [entry["message"] for entry in user_conversations.get(user_id, [])]
+        if len(conversation_history) > 1:
+            summary = summarize_conversation(" ".join(conversation_history))
+            print("Prompt after summarization: ", summary)
+            
+            summary = summarize_conversation(conversation_history)
+        
+        if summary:
+            prompt = summary
+        
+        text = f"Generate a single realistic outfit described as: {prompt}. The image should look photorealistic and focus only on the outfit. The background colour should be strictly white. Only generate the image of a single clothing item, not the person wearing it. Dont provide multiple outfits in the image. Give a single outfit suggestion."
+        print("Prompt for image generation: ", text)
+        image_url = send_request_to_openai_image_gen(text)
+
+        return jsonify({"response": image_url})
+
+    if user_id not in user_conversations:
+        user_conversations[user_id] = []
+
+    user_conversations[user_id].append({"message": message, "from": "user"})
+
+    conversation_history = [entry["message"] for entry in user_conversations[user_id]]
+    
+    summary = None
+    if len(conversation_history) > 1:
+        summary = summarize_conversation(" ".join(conversation_history))
+        print("Prompt after summarization: ", summary)
+        
+    if summary:
+        prompt = summary
+    else:
+        prompt = message
+    print("Prompt: ", prompt)
+
+    response = send_request_to_gemini(prompt)
+
+    user_conversations[user_id].append({"message": response, "from": "ai"})
+
+    return jsonify({"response": response})
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"status": "Healthy"})
 
 if __name__ == '__main__':
     app.run(debug=True)
