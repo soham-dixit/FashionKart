@@ -151,6 +151,7 @@ function Chat() {
             type: "bot",
             image: botResponse,
           };
+          fetchData(botResponse);
           setMessages((messages) => [...messages, newBotMessage]);
         } else {
           const newBotMessage = {
@@ -190,6 +191,8 @@ function Chat() {
     try {
       await axios.post(`${Flask_API_URL}/clear_chat`, { userId: user.userId });
       setMessages([]);
+      // clear side bar as well
+      setProductId("");
     } catch (err) {
       console.error("Error clearing chat history:", err);
     }
@@ -240,7 +243,23 @@ function Chat() {
                       alt="Generated image"
                       style={{ height: "200px", width: "200px" }}
                     />
-                    <ViewAllButton variant="contained">View Product</ViewAllButton>
+                    {/* <ViewAllButton variant="contained">View Product</ViewAllButton> */}
+                    <a
+              
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                textDecoration: "none",
+                backgroundColor: "#15B392",
+                color: "white",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                display: "inline-block",
+                marginTop: "10px",
+              }}
+            >
+              Visit Product Page
+            </a>
                   </Link>
 
                 </>
