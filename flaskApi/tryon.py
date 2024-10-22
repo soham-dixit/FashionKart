@@ -59,6 +59,7 @@ async def segmind_diffusion(cloth_image_path: str = None, model_image_path: str 
 
     async with aiohttp.ClientSession() as session:
         async with session.post(url, json=data, headers=headers) as response:
+            print("test")
             if response.status == 200:
                 image_data = await response.read()
                 if cloth_image_url:
