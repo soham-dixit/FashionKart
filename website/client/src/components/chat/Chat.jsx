@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/system";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -81,9 +82,7 @@ const ViewAllButton = styled(Button)`
   font-weight: 600;
 `;
 
-const RASA_API_URL = "http://localhost:5005";
-
-
+const Flask_API_URL = "http://localhost:5000";
 
 function Chat() {
   const {
@@ -108,8 +107,8 @@ function Chat() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  scrollToBottom();
-}, [messages]);
+    scrollToBottom();
+  }, [messages]);
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
@@ -138,27 +137,29 @@ function Chat() {
       // Send user message to Rasa server
       try {
         const response = await axios.post(
-          `${RASA_API_URL}/webhooks/rest/webhook`,
+          `${Flask_API_URL}/conversation`,
           {
             sender: user.userId,
             message: inputText,
           }
         );
 
-        // Process Rasa response and extract image URL if available
-        response.data.forEach(async (rasaResponse) => {
-          const newMessage = {
-            text: rasaResponse.text,
+        const botResponse = response.data.response;
+
+        if (botResponse.startsWith("http")) {
+          const newBotMessage = {
+            type: "bot",
+            image: botResponse,
+          };
+          setMessages((messages) => [...messages, newBotMessage]);
+        } else {
+          const newBotMessage = {
+            text: botResponse,
             type: "bot",
           };
-          if (rasaResponse.attachment) {
-            newMessage.image = rasaResponse.attachment.image;
-            setMessages((messages) => [...messages, newMessage]);
-            await fetchData(rasaResponse.attachment.image);
-          } else {
-            setMessages((messages) => [...messages, newMessage]);
-          }
-        });
+          setMessages((messages) => [...messages, newBotMessage]);
+        }
+
       } catch (error) {
         console.error("Error sending message to Rasa:", error);
       }
@@ -185,28 +186,37 @@ function Chat() {
     setInputText(event.target.value);
   };
 
+  const handleClearChat = async () => {
+    try {
+      await axios.post(`${Flask_API_URL}/clear_chat`, { userId: user.userId });
+      setMessages([]);
+    } catch (err) {
+      console.error("Error clearing chat history:", err);
+    }
+  };
+
   return (
     <>
       <ButtonContainer>
         {/* Add your buttons here */}
         <Link to="/">
-        <Button
-          variant="contained"
-          size="large"
-          style={{ backgroundColor: '#73EC8B', color: 'black' }}
-        >
-          Ask AI 🤖
-        </Button>
-      </Link>
-      <Link to="/home">
-        <Button
-          variant="contained"
-          size="large"
-          style={{ backgroundColor: '#73EC8B', color: 'black' }}
-        >
-          Explore 🔍
-        </Button>
-      </Link>
+          <Button
+            variant="contained"
+            size="large"
+            style={{ backgroundColor: '#73EC8B', color: 'black' }}
+          >
+            Ask AI 🤖
+          </Button>
+        </Link>
+        <Link to="/home">
+          <Button
+            variant="contained"
+            size="large"
+            style={{ backgroundColor: '#73EC8B', color: 'black' }}
+          >
+            Explore 🔍
+          </Button>
+        </Link>
       </ButtonContainer>
       <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
         <Grid container spacing={2}>
@@ -232,7 +242,7 @@ function Chat() {
                     />
                     <ViewAllButton variant="contained">View Product</ViewAllButton>
                   </Link>
-                  
+
                 </>
               )}
             </Sidebar>
@@ -241,20 +251,30 @@ function Chat() {
             <Conversation>
               <Message>
                 Hi there! I'm your personal stylist. I can help you find the
-                perfect outfit for any occasion. Just ask me! Let's start by
-                knowing your Age.
+                perfect outfit for any occasion. Just ask me anything!
               </Message>
               {messages.map((message, index) => (
                 <Message key={index} type={message.type}>
-                  {message.text}
-                  {message.image && (
-                    <div>
-                      <img
-                        src={message.image}
-                        alt="Generated Outfit"
-                        style={{ maxWidth: "60%" }}
-                      />
-                    </div>
+                  {/* Check if message contains an image */}
+                  {message.image ? (
+                    <img
+                      src={message.image}
+                      alt="Generated Outfit"
+                      style={{ maxWidth: "60%", height: "auto" }}
+                    />
+                  ) : (
+                    typeof message.text === 'string'
+                      ? message.text.split('\n').map((line, i) => (
+                        <React.Fragment key={i}>
+                          {line.split(/(\*\*.*?\*\*)/).map((part, j) => (
+                            part.startsWith("**") && part.endsWith("**")
+                              ? <strong key={j}>{part.replace(/\*\*/g, "")}</strong>
+                              : <span key={j}>{part}</span>
+                          ))}
+                          <br />
+                        </React.Fragment>
+                      ))
+                      : JSON.stringify(message.text)
                   )}
                 </Message>
               ))}
@@ -274,6 +294,9 @@ function Chat() {
               {/* <IconButtonStyled onClick={handleVoice}>
                 <MicIcon color={listening ? "primary" : "inherit"} />
               </IconButtonStyled> */}
+              <IconButtonStyled onClick={handleClearChat}>
+                <DeleteIcon />
+              </IconButtonStyled>
             </ChatBox>
           </Grid>
         </Grid>

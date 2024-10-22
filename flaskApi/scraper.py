@@ -94,9 +94,21 @@ def get_product_details(query):
     product_details_json = json.dumps(product_details, indent=4)
 
     if product_details:
-        return product_details_json
+        message = "Here are some recommendations:\n\n"
+        for index, product in enumerate(product_details, 1):
+            message += f"{index}. **{product['title']}**\n"
+            if product['price']:
+                message += f"   - Price: {product['price']}\n"
+            if product['rating']:
+                message += f"   - Rating: {product['rating']}\n"
+            if product['availability']:
+                message += f"   - Availability: {product['availability']}\n"
+            message += f"- [View on Amazon]({product['link']})\n\n"
+
+        return message.strip()
     else:
         return "No product details found."
+
 
 
 # Example usage
