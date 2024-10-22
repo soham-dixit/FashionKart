@@ -14,6 +14,7 @@ import os
 from tryon import try_on
 from gen_ai import send_request_to_gemini, send_request_to_openai_image_gen, summarize_conversation, get_recommendation_keywords
 from scraper import get_product_details
+from trend_scraper import scrape_trends
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -273,8 +274,13 @@ def handle_conversation():
         if summary:
             prompt = summary
         
-        text = f"Generate a single realistic outfit described as: {prompt}. The image should look photorealistic and focus only on the outfit. The background colour should be strictly white. Only generate the image of a single clothing item, not the person wearing it. Dont provide multiple outfits in the image. Give a single outfit suggestion."
-        print("Prompt for image generation: ", text)
+        text = (
+    f"Generate a single photorealistic outfit based on the following description: {prompt}. "
+    "The image should feature only one clothing item, focusing on its design, texture, and color. "
+    "The background must be strictly white, with no person, accessories, or additional outfits present. "
+    "Ensure that only one outfit is shown clearly, without any extra elements or context."
+)
+        print("Prompt for image gen: ", text)
         image_url = send_request_to_openai_image_gen(text)
 
         return jsonify({"response": image_url})
@@ -315,7 +321,7 @@ def handle_conversation():
         prompt = message
     print("Prompt: ", prompt)
 
-    response = send_request_to_gemini(prompt)
+    response = send_request_to_gemini(prompt, app.config['TRENDS_JSON'])
 
     user_conversations[user_id].append({"message": response, "from": "ai"})
 
@@ -331,6 +337,14 @@ def clear_chat():
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({"status": "Healthy"})
+
+@app.before_request
+def startup():
+    print("Starting up...")
+    url = "https://iifd.in/the-future-of-style-top-5-emerging-fashion-trends-for-2024/"
+    trends_json = scrape_trends(url)
+    summary = summarize_conversation(trends_json)
+    app.config['TRENDS_JSON'] = summary
 
 if __name__ == '__main__':
     app.run(debug=True)
