@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/system";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -142,23 +143,22 @@ function Chat() {
             message: inputText,
           }
         );
-        
+
         const botResponse = response.data.response;
 
-      // Check if response is a URL (starts with 'http')
-      if (botResponse.startsWith("http")) {
-        const newBotMessage = {
-          type: "bot",
-          image: botResponse, 
-        };
-        setMessages((messages) => [...messages, newBotMessage]);
-      } else {
-        const newBotMessage = {
-          text: botResponse,
-          type: "bot",
-        };
-        setMessages((messages) => [...messages, newBotMessage]);
-      }
+        if (botResponse.startsWith("http")) {
+          const newBotMessage = {
+            type: "bot",
+            image: botResponse,
+          };
+          setMessages((messages) => [...messages, newBotMessage]);
+        } else {
+          const newBotMessage = {
+            text: botResponse,
+            type: "bot",
+          };
+          setMessages((messages) => [...messages, newBotMessage]);
+        }
 
       } catch (error) {
         console.error("Error sending message to Rasa:", error);
@@ -254,30 +254,30 @@ function Chat() {
                 perfect outfit for any occasion. Just ask me anything!
               </Message>
               {messages.map((message, index) => (
-      <Message key={index} type={message.type}>
-        {/* Check if message contains an image */}
-        {message.image ? (
-          <img
-            src={message.image}
-            alt="Generated Outfit"
-            style={{ maxWidth: "60%", height: "auto" }}
-          />
-        ) : (
-          typeof message.text === 'string'
-            ? message.text.split('\n').map((line, i) => (
-              <React.Fragment key={i}>
-                {line.split(/(\*\*.*?\*\*)/).map((part, j) => (
-                  part.startsWith("**") && part.endsWith("**")
-                    ? <strong key={j}>{part.replace(/\*\*/g, "")}</strong>
-                    : <span key={j}>{part}</span>
-                ))}
-                <br />
-              </React.Fragment>
-            ))
-            : JSON.stringify(message.text)
-        )}
-      </Message>
-    ))}
+                <Message key={index} type={message.type}>
+                  {/* Check if message contains an image */}
+                  {message.image ? (
+                    <img
+                      src={message.image}
+                      alt="Generated Outfit"
+                      style={{ maxWidth: "60%", height: "auto" }}
+                    />
+                  ) : (
+                    typeof message.text === 'string'
+                      ? message.text.split('\n').map((line, i) => (
+                        <React.Fragment key={i}>
+                          {line.split(/(\*\*.*?\*\*)/).map((part, j) => (
+                            part.startsWith("**") && part.endsWith("**")
+                              ? <strong key={j}>{part.replace(/\*\*/g, "")}</strong>
+                              : <span key={j}>{part}</span>
+                          ))}
+                          <br />
+                        </React.Fragment>
+                      ))
+                      : JSON.stringify(message.text)
+                  )}
+                </Message>
+              ))}
               <div ref={conversationEndRef} />
             </Conversation>
             <ChatBox>
@@ -294,6 +294,9 @@ function Chat() {
               {/* <IconButtonStyled onClick={handleVoice}>
                 <MicIcon color={listening ? "primary" : "inherit"} />
               </IconButtonStyled> */}
+              <IconButtonStyled onClick={handleClearChat}>
+                <DeleteIcon />
+              </IconButtonStyled>
             </ChatBox>
           </Grid>
         </Grid>
