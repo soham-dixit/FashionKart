@@ -68,7 +68,7 @@ def get_product_details(query):
     for link in links_list[:3]:
         amazon_url = "https://www.amazon.in" + link
         HEADERS = {
-            'User-Agent': 'Chrome/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
             'Accept-Language': 'en-US, en;q=0.5'
         }
         webpage = requests.get(amazon_url, headers=HEADERS)
@@ -97,8 +97,10 @@ def get_product_details(query):
         message = "Here are some recommendations:\n\n"
         for index, product in enumerate(product_details, 1):
             message += f"{index}. **{product['title']}**\n"
+            if product['image']:
+                message += f"   - [View Image]({product['image']})\n"
             if product['price']:
-                message += f"   - Price: {product['price']}\n"
+                message += f"   - Price: {'₹'+product['price']}\n"
             if product['rating']:
                 message += f"   - Rating: {product['rating']}\n"
             if product['availability']:
@@ -111,7 +113,7 @@ def get_product_details(query):
 
 
 
-# Example usage
+# # Example usage
 search_string = "Cap"
 product_data_json = get_product_details(search_string)
 

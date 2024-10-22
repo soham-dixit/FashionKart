@@ -255,28 +255,61 @@ function Chat() {
               </Message>
               {messages.map((message, index) => (
                 <Message key={index} type={message.type}>
-                  {/* Check if message contains an image */}
-                  {message.image ? (
-                    <img
-                      src={message.image}
-                      alt="Generated Outfit"
-                      style={{ maxWidth: "60%", height: "auto" }}
-                    />
-                  ) : (
-                    typeof message.text === 'string'
-                      ? message.text.split('\n').map((line, i) => (
-                        <React.Fragment key={i}>
-                          {line.split(/(\*\*.*?\*\*)/).map((part, j) => (
-                            part.startsWith("**") && part.endsWith("**")
-                              ? <strong key={j}>{part.replace(/\*\*/g, "")}</strong>
-                              : <span key={j}>{part}</span>
-                          ))}
-                          <br />
-                        </React.Fragment>
-                      ))
-                      : JSON.stringify(message.text)
-                  )}
-                </Message>
+  {/* Check if message contains an image */}
+  {message.image ? (
+    <img
+      src={message.image}
+      alt="Generated Outfit"
+      style={{ maxWidth: "60%", height: "auto" }}
+    />
+  ) : (
+    typeof message.text === "string" ? (
+      message.text.split("\n").map((line, i) => (
+        <React.Fragment key={i}>
+          {line.includes("[View Image]") ? (
+            // Extract the URL from the text and create a clickable "View Image" link
+                        <img
+              src={line.match(/\((.*?)\)/)[1]} // Extract the URL inside parentheses
+              alt="Outfit Image"
+              style={{ maxWidth: "25%", height: "auto", margin: "10px 0" }}
+            />
+          ) : line.includes("[View on Amazon]") ? (
+            // Extract the URL from the text and create a clickable "View on Amazon" link
+<a
+              href={line.match(/\((.*?)\)/)[1]} // Extract URL inside parentheses
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                textDecoration: "none",
+                backgroundColor: "#15B392",
+                color: "white",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                display: "inline-block",
+                marginTop: "10px",
+              }}
+            >
+              View on Amazon
+            </a>
+          ) : (
+            // Handle normal text with bold formatting for **bold**
+            line.split(/(\*\*.*?\*\*)/).map((part, j) =>
+              part.startsWith("**") && part.endsWith("**") ? (
+                <strong key={j}>{part.replace(/\*\*/g, "")}</strong>
+              ) : (
+                <span key={j}>{part}</span>
+              )
+            )
+          )}
+          <br />
+        </React.Fragment>
+      ))
+    ) : (
+      JSON.stringify(message.text)
+    )
+  )}
+</Message>
+
               ))}
               <div ref={conversationEndRef} />
             </Conversation>
