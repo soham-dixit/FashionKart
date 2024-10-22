@@ -269,6 +269,14 @@ function Chat() {
           <Grid item xs={9}>
             <Conversation>
               <Message>
+                Social Media Trends fetched!
+              </Message>
+              <Message>
+                <strong>Use: </strong><br></br>
+                <strong>/recommend:</strong> Get recommendations based on your input <br></br>
+                <strong>/generate:</strong> Generate an outfit based on your conversation <br></br>
+              </Message>
+              <Message>
                 Hi there! I'm your personal stylist. I can help you find the
                 perfect outfit for any occasion. Just ask me anything!
               </Message>

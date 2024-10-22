@@ -17,7 +17,17 @@ class FirebaseUploader:
             firebase_admin.initialize_app(cred, {'storageBucket': 'fashionkart-26db7.appspot.com'})
             firebase_initialized = True
 
-    def upload_to_firebase(self, image_path, folder_name):
+    # def upload_to_firebase(self, image_path, folder_name):
+    #     bucket = storage.bucket()
+    #     destination_blob_name = f"{folder_name}/{str(uuid.uuid4())}.jpg"
+    #     blob = bucket.blob(destination_blob_name)
+
+    #     blob.upload_from_filename(image_path)
+
+    #     blob_url = blob.public_url
+    #     return blob_url
+
+def upload_to_firebase(image_path, folder_name):
         bucket = storage.bucket()
         destination_blob_name = f"{folder_name}/{str(uuid.uuid4())}.jpg"
         blob = bucket.blob(destination_blob_name)
@@ -41,8 +51,8 @@ def uploadToAzure(image):
         temp_image_file.write(image_data)
 
     # Upload the image file to Azure Blob Storage
-    firebase_uploader = FirebaseUploader('D:\\Projects\\Flipkart GRiD 5.0\\FashionKart\\chatbot\\actions\\firebase-admin-sdk.json')
-    image_url = firebase_uploader.upload_to_firebase(temp_image_path, 'generatedImages')
+    # firebase_uploader = FirebaseUploader('D:\\Projects\\Flipkart GRiD 5.0\\FashionKart\\chatbot\\actions\\firebase-admin-sdk.json')
+    image_url = upload_to_firebase(temp_image_path, 'generatedImages')
 
     # Clean up: Delete the temporary image file
     os.remove(temp_image_path)

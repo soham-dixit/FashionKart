@@ -4,7 +4,7 @@ from PIL import Image, UnidentifiedImageError
 
 from azure.uploadToAzure import uploadToAzure
 
-API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
+API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3.5-large"
 headers = {"Authorization": "Bearer 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"}
 
 def query(payload):
