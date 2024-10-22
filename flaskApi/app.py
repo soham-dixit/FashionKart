@@ -12,7 +12,8 @@ import aiohttp
 import base64
 import os
 from tryon import try_on
-from gen_ai import send_request_to_gemini, send_request_to_openai_image_gen, summarize_conversation
+from gen_ai import send_request_to_gemini, send_request_to_openai_image_gen, summarize_conversation, get_recommendation_keywords
+from scraper import get_product_details
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -277,6 +278,24 @@ def handle_conversation():
         image_url = send_request_to_openai_image_gen(text)
 
         return jsonify({"response": image_url})
+    
+    elif message.strip().lower().startswith("/recommend"):
+        prompt = message.strip().lower().replace("/recommend", "").strip()
+
+        summary = None
+        conversation_history = [entry["message"] for entry in user_conversations.get(user_id, [])]
+        if len(conversation_history) > 1:
+            summary = summarize_conversation(" ".join(conversation_history))
+            print("Prompt after summarization: ", summary)
+            
+            summary = get_recommendation_keywords(conversation_history)
+            
+        if summary:
+            prompt = summary
+            
+        product_details = get_product_details(prompt)
+        
+        return jsonify({"response": product_details})
 
     if user_id not in user_conversations:
         user_conversations[user_id] = []

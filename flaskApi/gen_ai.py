@@ -33,8 +33,10 @@ def summarize_conversation(conversation):
     response = model.generate_content(prompt)
     return response.text
 
-def generate_image_from_text(text):
-    prompt = f""
+def get_recommendation_keywords(message):
     model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = f"Extract the product recommendation from the following conversation: {message}."
+    prompt += "\nIdentify and output only 1 clothing/fashion-related keyword or phrases that represent the user's preferences or needs."
+    
     response = model.generate_content(prompt)
     return response.text
