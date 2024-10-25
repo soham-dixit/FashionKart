@@ -14,4 +14,5 @@ clothes-extraction/cloth_segm.pth
 flaskApi/.env
 __pycache__/
 *.pyc
+chatbot
 # build
