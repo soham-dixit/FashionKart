@@ -15,6 +15,7 @@ from tryon import try_on
 from gen_ai import send_request_to_gemini, send_request_to_openai_image_gen, summarize_conversation, get_recommendation_keywords
 from scraper import get_product_details
 from trend_scraper import scrape_trends
+from language import detect_language, translate_to_english, translate_to_user_language
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -22,6 +23,7 @@ token_secret="2Z3SeD5FYpJ7ARSrjRrgyleAxmUDWLPUkCftQp"
 mongo_client = MongoClient('mongodb+srv://StealthMode:ehfjZVeARoqO3Elb@stealthmode.mggqpgd.mongodb.net/?retryWrites=true&w=majority&appName=StealthMode') 
 db = mongo_client['test'] 
 users_collection = db['users'] 
+festival_collection = db['festivals']
 
 base_url = 'http://localhost:8000/api/v4/'
 
@@ -254,80 +256,65 @@ async def virtual_try_on():
 
 user_conversations = {}
 
+def update_conversation_history(user_id, message, sender="user"):
+    if user_id not in user_conversations:
+        user_conversations[user_id] = []
+    user_conversations[user_id].append({"message": message, "from": sender})
+    user_conversations[user_id] = user_conversations[user_id][-5:]
+
 @app.route('/conversation', methods=['POST'])
 def handle_conversation():
     data = request.json
     user_id = data.get('userId')
     message = data.get('message')
+    
+    user_language = detect_language(message)
+    if user_language != 'en':
+        print("User language detected: ", user_language)
+        print("Message: ", message)
+        message = translate_to_english(message)
+        print("Translated message: ", message)
+    
+    update_conversation_history(user_id, message)
+
+    conversation_history = [entry["message"] for entry in user_conversations[user_id]]
+    previous_context = summarize_conversation(" ".join(conversation_history[:-1])) if len(conversation_history) > 1 else None
 
     if message.strip().lower().startswith("/generate"):
         prompt = message.strip().lower().replace("/generate", "").strip()
-
-        summary = None
-        conversation_history = [entry["message"] for entry in user_conversations.get(user_id, [])]
-        if len(conversation_history) > 1:
-            summary = summarize_conversation(" ".join(conversation_history))
-            print("Prompt after summarization: ", summary)
-            
-            summary = summarize_conversation(conversation_history)
-        
-        if summary:
-            prompt = summary
-        
+        summary = previous_context if previous_context else prompt
+        print("Summary for image gen: ", summary)
         text = (
-    f"Generate a single photorealistic outfit based on the following description: {prompt}. "
-    "The image should feature only one clothing item, focusing on its design, texture, and color. "
-    "The background must be strictly white, with no person, accessories, or additional outfits present. "
-    "Ensure that only one outfit is shown clearly, without any extra elements or context."
-)
+            f"Generate a single photorealistic outfit based on this description: {summary}. "
+            "The image should display only one outfit, focusing on the design, texture, and color with a pure white background. "
+            "No additional elements or accessories should be included."
+        )
+        
         print("Prompt for image gen: ", text)
         image_url = send_request_to_openai_image_gen(text)
+        update_conversation_history(user_id, text, sender="ai")
 
         return jsonify({"response": image_url})
-    
+
     elif message.strip().lower().startswith("/recommend"):
         prompt = message.strip().lower().replace("/recommend", "").strip()
-
-        summary = None
-        conversation_history = [entry["message"] for entry in user_conversations.get(user_id, [])]
-        if len(conversation_history) > 1:
-            summary = summarize_conversation(" ".join(conversation_history))
-            print("Prompt after summarization: ", summary)
-            
-            summary = get_recommendation_keywords(conversation_history)
-            
-        if summary:
-            prompt = summary
-            
-        product_details = get_product_details(prompt)
+        summary = previous_context if previous_context else prompt
+        recommendation_keywords = get_recommendation_keywords(summary)
+        
+        product_details = get_product_details(recommendation_keywords)
         
         return jsonify({"response": product_details})
 
-    if user_id not in user_conversations:
-        user_conversations[user_id] = []
-
-    user_conversations[user_id].append({"message": message, "from": "user"})
-
-    conversation_history = [entry["message"] for entry in user_conversations[user_id]]
+    response = send_request_to_gemini(message, app.config['TRENDS_JSON'], previous_context)
+    update_conversation_history(user_id, response, sender="ai")
     
-    summary = None
-    if len(conversation_history) > 1:
-        summary = summarize_conversation(" ".join(conversation_history))
-        print("Prompt after summarization: ", summary)
-        
-    if summary:
-        prompt = summary
-    else:
-        prompt = message
-    print("Prompt: ", prompt)
+    if user_language != 'en':
+        print("Response before translation: ", response)
+        response = translate_to_user_language(response, user_language)
 
-    response = send_request_to_gemini(prompt, app.config['TRENDS_JSON'])
-
-    user_conversations[user_id].append({"message": response, "from": "ai"})
 
     return jsonify({"response": response})
 
-# API to clear the conversation history/memory
 @app.route('/clear_chat', methods=['POST'])
 def clear_chat():
     user_id = request.json.get('userId')
@@ -338,13 +325,22 @@ def clear_chat():
 def health():
     return jsonify({"status": "Healthy"})
 
-@app.before_request
-def startup():
-    print("Starting up...")
-    url = "https://iifd.in/the-future-of-style-top-5-emerging-fashion-trends-for-2024/"
-    trends_json = scrape_trends(url)
-    summary = summarize_conversation(trends_json)
-    app.config['TRENDS_JSON'] = summary
+def serialize_document(doc):
+    doc['_id'] = str(doc['_id'])
+    return doc
+
+@app.route('/get_festival_images', methods=['GET'])
+def get_festival_images():
+    gender = request.args.get('gender')
+    festivals = festival_collection.find({
+        "gender": gender
+    })
+    
+    festival_list = [serialize_document(festival) for festival in festivals]
+    
+    return jsonify({"data": festival_list})
 
 if __name__ == '__main__':
+    trends_json = scrape_trends("https://iifd.in/the-future-of-style-top-5-emerging-fashion-trends-for-2024/")
+    app.config['TRENDS_JSON'] = summarize_conversation(trends_json)
     app.run(debug=True)
