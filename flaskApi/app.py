@@ -298,10 +298,10 @@ def handle_conversation():
 
     elif message.strip().lower().startswith("/recommend"):
         prompt = message.strip().lower().replace("/recommend", "").strip()
-        summary = previous_context if previous_context else prompt
-        recommendation_keywords = get_recommendation_keywords(summary)
+        # summary = previous_context if previous_context else prompt
+        # recommendation_keywords = get_recommendation_keywords(summary)
         
-        product_details = get_product_details(recommendation_keywords)
+        product_details = get_product_details(prompt)
         
         return jsonify({"response": product_details})
 
@@ -331,13 +331,28 @@ def serialize_document(doc):
 
 @app.route('/get_festival_images', methods=['GET'])
 def get_festival_images():
-    gender = request.args.get('gender')
+    cookie = request.cookies.get('auth-token')
+    if not cookie:
+        return jsonify({'message': 'Missing auth token'}), 600
+
+    try:
+        decoded_payload = jwt.decode(cookie, token_secret, algorithms=['HS256'], verify=False)
+        user_id = decoded_payload.get('userId')
+    except jwt.DecodeError:
+        return jsonify({'message': 'Invalid token'}), 401
+
+    if not user_id:
+        return jsonify({'message': 'User ID not found in token'}), 401
+
+    user_data = users_collection.find_one({'userId': user_id})
+    print("User data: ", user_data)
+    gender = user_data['gender'].lower()
+    print("usr gender", gender)
     festivals = festival_collection.find({
         "gender": gender
     })
     
     festival_list = [serialize_document(festival) for festival in festivals]
-    
     return jsonify({"data": festival_list})
 
 if __name__ == '__main__':
