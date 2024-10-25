@@ -108,4 +108,5 @@ async def try_on(cloth_image_path: str = None, person_image_path: str = None, cl
         # Upload to Firebase
         public_url = upload_to_firebase(result, storage_path)
         # print(public_url)
+    print("Try on API Completed")
     return public_url

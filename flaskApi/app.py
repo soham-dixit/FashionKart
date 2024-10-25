@@ -240,7 +240,7 @@ async def virtual_try_on():
         elif category == 'Bottomwear':
             category = 'Lower body'
         else:
-            category = 'Lower body'
+            category = 'Dress'
 
         result = await try_on(cloth_image_path=product_image_path, person_image_path=None, cloth_image_url= None, person_image_url=img_url, clothing_category=category)
 
