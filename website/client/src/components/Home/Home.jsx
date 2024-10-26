@@ -12,6 +12,7 @@ import MidSlide from "./MidSlide";
 import MidSection from "./MidSection";
 import { Link } from "react-router-dom";
 import axios from "../../axios/axios";
+import flask from "../../axios/flask";
 
 const Component = styled(Box)`
   padding: 10px;
@@ -31,9 +32,8 @@ const Home = () => {
   const { cartItems } = useSelector((state) => state.cart);
 
   const [genCartProducts, setGenCartProducts] = React.useState([]);
-  const [recommendedCartProducts, setRecommendedCartProducts] = React.useState(
-    []
-  );
+  const [genCartProductsFestival, setGenCartProductsFestival] = React.useState([]);
+  const [recommendedCartProducts, setRecommendedCartProducts] = React.useState([]);
   const [genFrequentProducts, setGenFrequentProducts] = React.useState([]);
   const [recommendedFrequentProducts, setRecommendedFrequentProducts] =
     React.useState([]);
@@ -43,6 +43,17 @@ const Home = () => {
   const [genBrowsingProducts, setGenBrowsingProducts] = React.useState([]);
   const [recommendedBrowsingProducts, setRecommendedBrowsingProducts] =
     React.useState([]);
+  
+  const getFestivalImages = async () => {
+  try {
+    const response = await flask.get('/get_festival_images', {
+      withCredentials: true, // This allows cookies to be sent with the request
+    });
+    setGenCartProductsFestival(response.data.data);// Assuming `data` holds the relevant festival information
+  } catch (error) {
+    console.error("Error fetching festival images", error);
+  }
+};
 
   const getCartProducts = async () => {
     await axios
@@ -89,6 +100,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getFestivalImages();
     getCartProducts();
     getFrequentData();
     getPurchaseData();
@@ -137,6 +149,11 @@ const Home = () => {
 
         {/* <MidSection /> */}
 
+        <Slide
+          products={genCartProductsFestival}
+          title="Generated Outfits based on Upcoming Festivals"
+          timer={false}
+        />
         <Slide
           products={genCartProducts}
           title="Generated Outfits based on your Cart History"

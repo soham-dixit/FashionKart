@@ -159,9 +159,12 @@ const Slide = ({
                 </Link>
               ) : (
                 <Box textAlign="center" style={{ padding: "25px 15px" }}>
-                  <Image src={product?.imageUrl} alt="product" />
+                  <Image
+                    src={product?.image_url || product?.imageUrl}
+                    alt="product"
+                  />
                   <Text style={{ fontWeight: 600, color: "#212121" }}>
-                    {" "}
+                    {product.festival ? product.festival : " "}     
                     {product?.product_name}{" "}
                   </Text>
                   <Text style={{ color: "green" }}> {product?.price} </Text>
