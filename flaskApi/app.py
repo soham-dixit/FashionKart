@@ -355,6 +355,64 @@ def get_festival_images():
     festival_list = [serialize_document(festival) for festival in festivals]
     return jsonify({"data": festival_list})
 
+class CityStateMapper:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = "https://api.opencagedata.com/geocode/v1/json"
+
+    def get_state(self, city):
+        params = {
+            'q': f"{city}, India",
+            'key': self.api_key
+        }
+
+        response = requests.get(self.base_url, params=params)
+
+        if response.status_code == 200:
+            results = response.json().get('results', [])
+            if results:
+                components = results[0]['components']
+                if 'state' in components:
+                    return components['state']
+                elif 'state_district' in components:
+                    return components['state_district']
+            return "State not found"
+        else:
+            return f"Error: {response.status_code}"
+
+mapper = CityStateMapper('78b64313741f4459bdca00bf55fb6366')
+
+@app.route('/get_location_image', methods=['GET'])
+def get_location_image():
+    cookie = request.cookies.get('auth-token')
+    if not cookie:
+        return jsonify({'message': 'Missing auth token'}), 600
+
+    try:
+        decoded_payload = jwt.decode(cookie, token_secret, algorithms=['HS256'], verify=False)
+        user_id = decoded_payload.get('userId')
+    except jwt.DecodeError:
+        return jsonify({'message': 'Invalid token'}), 401
+
+    if not user_id:
+        return jsonify({'message': 'User ID not found in token'}), 401
+
+    user_data = users_collection.find_one({'userId': 2})
+    print("User data: ", user_data)
+    city = user_data['city']
+    print("usr city", city)
+    locations = db['locations']
+    state = mapper.get_state(city)
+    
+    locations = locations.find({
+        "location": state,
+        "gender": user_data['gender']
+    })
+    
+    list_of_locations=[serialize_document(location) for location in locations]
+    
+    return jsonify({"data": list_of_locations})
+
 if __name__ == '__main__':
     trends_json = scrape_trends("https://iifd.in/the-future-of-style-top-5-emerging-fashion-trends-for-2024/")
     app.config['TRENDS_JSON'] = summarize_conversation(trends_json)

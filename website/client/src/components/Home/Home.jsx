@@ -43,6 +43,7 @@ const Home = () => {
   const [genBrowsingProducts, setGenBrowsingProducts] = React.useState([]);
   const [recommendedBrowsingProducts, setRecommendedBrowsingProducts] =
     React.useState([]);
+  const [genRegionalPreferences, setGenRegionalPreferences] = React.useState([]);
   
   const getFestivalImages = async () => {
   try {
@@ -52,6 +53,17 @@ const Home = () => {
     setGenCartProductsFestival(response.data.data);// Assuming `data` holds the relevant festival information
   } catch (error) {
     console.error("Error fetching festival images", error);
+  }
+  };
+  
+    const getRegionalImages = async () => {
+  try {
+    const response = await flask.get('/get_location_image', {
+      withCredentials: true, // This allows cookies to be sent with the request
+    });
+    setGenRegionalPreferences(response.data.data);// Assuming `data` holds the relevant festival information
+  } catch (error) {
+    console.error("Error fetching location images", error);
   }
 };
 
@@ -101,6 +113,7 @@ const Home = () => {
 
   useEffect(() => {
     getFestivalImages();
+    getRegionalImages();
     getCartProducts();
     getFrequentData();
     getPurchaseData();
@@ -152,6 +165,11 @@ const Home = () => {
         <Slide
           products={genCartProductsFestival}
           title="Generated Outfits based on Upcoming Festivals"
+          timer={false}
+        />
+        <Slide
+          products={genRegionalPreferences}
+          title="Generated Outfits based on Regional Style Preferences"
           timer={false}
         />
         <Slide
