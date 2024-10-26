@@ -11,44 +11,6 @@
 1. Download the trained model zip file from [Google Drive](https://drive.google.com/file/d/1AA73j9EM7TCJn579Zy86rFjyM8z72A_7/view?usp=sharing).
 2. Extract the zip file in `flaskApi/models/`.
 
-## Chatbot
-
-1. Create Python Virtual Environment
-
-   ```bash
-   python -m venv env
-   ```
-
-2. Activate Virtual Environment
-   On macOS/Linux:
-
-   ```bash
-   source env/bin/activate
-   ```
-
-   On Windows:
-
-   ```bash
-   env/Scripts/activate
-   ```
-
-3. Install Rasa
-
-   ```bash
-   pip3 install rasa
-   ```
-
-4. Run Rasa API Server (Open a new terminal)
-
-   ```bash
-   rasa run --enable-api --cors "*"
-   ```
-
-5. Run Rasa Actions Server (Open another new terminal)
-   ```bash
-   rasa run actions
-   ```
-
 ## Flask Server
 
 1. Navigate to Flask API Directory
