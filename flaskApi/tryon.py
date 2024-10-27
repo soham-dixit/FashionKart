@@ -12,7 +12,7 @@ FITTED_IMAGES_FOLDER = "./fitted_images/"
 load_dotenv()
 
 # Initialize Firebase Admin SDK with credentials JSON
-cred = credentials.Certificate('D:\\Projects\\Flipkart GRiD 5.0\\new\\fashionkart\\chatbot\\actions\\firebase-admin-sdk.json')  # Replace with the path to your service account JSON
+cred = credentials.Certificate('D:\\Projects\\Flipkart GRiD 5.0\\new\\fashionkart\\website\\server\\firebase-admin-sdk.json')  # Replace with the path to your service account JSON
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'fashionkart-26db7.appspot.com'  # Replace with your Firebase Storage bucket name
 })

@@ -52,11 +52,14 @@ def get_availability(soup):
 
 
 def get_product_details(query):
+    print("get_product_details called")
     """Scrapes product details from Amazon based on the search query."""
     URL = f"https://www.amazon.in/s?k={query}"
-    HEADERS = {'User-Agent': '', 'Accept-Language': 'en-US, en;q=0.5'}
+    HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.62 Safari/537.36', 'Accept-Language': 'en-US, en;q=0.5'}
     webpage = requests.get(URL, headers=HEADERS)
     soup = BeautifulSoup(webpage.content, "html.parser")
+
+    # print(soup)
 
     # Extracting product links
     links = soup.find_all("a", attrs={'class': 'a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal'})
@@ -68,7 +71,7 @@ def get_product_details(query):
     for link in links_list[:3]:
         amazon_url = "https://www.amazon.in" + link
         HEADERS = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.62 Safari/537.36',
             'Accept-Language': 'en-US, en;q=0.5'
         }
         webpage = requests.get(amazon_url, headers=HEADERS)
