@@ -237,14 +237,14 @@ const LoginDialog = ({ open = true }) => {
                     <Error>{message}</Error>
                   )}
                   <Text>
-                    By continuing, you agree to FashionGen's Terms of Use and
+                    By continuing, you agree to Fashion Kart's Terms of Use and
                     Privacy Policy.
                   </Text>
                   <LoginButton style={{backgroundColor:"#73EC8B", color:"#000000", fontWeight:"600"}} onClick={() => loginUser()}>Login</LoginButton>
                   <Typography style={{ textAlign: "center" }}>OR</Typography>
                   <RequestOTP style={{backgroundColor:"#73EC8B", color:"#000000", fontWeight:"600"}}>Request OTP</RequestOTP>
                   <CreateAccount style={{color:"#267b69"}} onClick={() => toggleSignup()}>
-                    New to FashionGen? Create an account
+                    New to Fashion Kart? Create an account
                   </CreateAccount>
                 </Wrapper>
               ) : (
