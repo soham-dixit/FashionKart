@@ -16,6 +16,14 @@ Fashion Kart is a GenAI-powered fashion platform that redefines online shopping 
 
 ReactJS, Node.js, Flask, MongoDB, SQL, Firebase, OpenAI, Stable Diffusion, Gemini
 
+### Architecture
+
+![Architecture](architecture.png)
+
+### Demo
+
+[Watch the demo video](https://youtu.be/BfjZTR4WI2M?si=YL6LmTxw_VLumFlb)
+
 ---
 
 # Project Setup Guide
