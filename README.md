@@ -14,7 +14,7 @@ Fashion Kart is a GenAI-powered fashion platform that redefines online shopping 
 
 ### Technologies Used
 
-ReactJS, Node.js, Flask, MongoDB, SQL, Firebase, OpenAI, Stable Diffusion, Gemini
+ReactJS, Node.js, Flask, MongoDB, MySQL, Firebase, TensorFlow, OpenAI, Gemini, Stable Diffusion, Segmind, Azure Blob Storage
 
 ### Architecture
 
@@ -24,9 +24,21 @@ ReactJS, Node.js, Flask, MongoDB, SQL, Firebase, OpenAI, Stable Diffusion, Gemin
 
 [Watch the demo video](https://youtu.be/BfjZTR4WI2M?si=YL6LmTxw_VLumFlb)
 
+### License
+
+This project is licensed under the [GNU AGPL v3.0](LICENSE).
+
 ---
 
 # Project Setup Guide
+
+## Prerequisites
+
+- Node.js and npm
+- Python 3
+- MySQL Server
+- A MongoDB Atlas cluster (username/password)
+- A Firebase project with Admin SDK and Storage enabled
 
 ## Dataset
 
@@ -125,11 +137,65 @@ Create a .env file in the flaskApi directory to store environment variables.
    npm install
    ```
 
-3. Run Development Server
+3. Set Up Environment Variables
+   Create a `.env` file in the `website/server` directory.
+
+   ```bash
+   touch .env
+   ```
+
+   Add the following environment variables to the `.env` file.
+
+   ```bash
+   PORT=8000
+   DB_USERNAME=
+   DB_PASSWORD=
+   TOKEN_SECRET=
+   ```
+
+   - `DB_USERNAME` / `DB_PASSWORD`: credentials for the MongoDB Atlas cluster.
+   - `TOKEN_SECRET`: any secret string used to sign JWTs.
+
+4. Set Up Firebase Admin SDK
+   Download your Firebase project's service account key and save it as `firebase-admin-sdk.json` in the `website/server` directory. This is used for Firebase Storage (virtual try-on image uploads).
+
+5. Run Development Server
    ```bash
    npm run dev
+   ```
+
+## Website Client (optional, for frontend development)
+
+The server already serves a pre-built copy of the client from `website/server/build`, so this step is only needed if you're making changes to the frontend.
+
+1. Navigate to Website Client Directory
+
+   ```bash
+   cd website/client
+   ```
+
+2. Install Dependencies
+
+   ```bash
+   npm install
+   ```
+
+3. Run Development Server
+   ```bash
+   npm start
+   ```
+   This starts the client at [http://localhost:3000/](http://localhost:3000/) with hot-reloading, using the API served by the Website Server.
+
+4. To ship your changes, build the client and copy the output into the server's `build` folder.
+   ```bash
+   npm run build
    ```
 
 ## Access the website
 
 Visit [http://localhost:8000/](http://localhost:8000/) in your web browser to access.
+
+## Additional Scripts
+
+- `scripts/` contains standalone Python scripts used to generate sample data (browsing history, cart activity, purchase history, festival data).
+- `clothes-extraction/` contains a standalone script for segmenting clothing images from product photos. Neither is required to run the application.
